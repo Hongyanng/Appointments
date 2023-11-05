@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,92 +12,242 @@
         android:layout_height="280dp"
         android:contentDescription="@string/app_name"
         android:scaleType="centerCrop"
-        android:src="@drawable/loginleftimg2" />
+        android:src="@drawable/loginleftimg2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/header_layer"
+        app:layout_constraintBottom_toBottomOf="@+id/imageHeader"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:gravity="center_vertical"
         android:orientation="vertical"
-        android:background="@drawable/login_background">
+        app:layout_constraintBottom_toBottomOf="@id/imageHeader"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/user_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dip"
-        android:ellipsize="marquee"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:scrollHorizontally="true"
-        android:singleLine="true"
-        android:text="欢迎使用教室预约系统用户端"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="@string/your_app"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/et_username"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_margin="10dp"
-        android:background="@drawable/btn_item_medium_default"
-        android:drawableLeft="@mipmap/ic_user_info"
-        android:drawablePadding="10dp"
-        android:ellipsize="end"
-        android:gravity="center_vertical"
-        android:hint="请输入用户名"
-        android:paddingLeft="4dp"
-        android:singleLine="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:includeFontPadding="false"
+            android:text="教室预约系统"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
-    <ImageButton
-        android:id="@+id/ibtn_del"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_alignRight="@id/et_username"
-        android:background="@drawable/btn_selector"
-        android:visibility="gone" />
-
-    <EditText
-        android:id="@+id/et_pwd"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_margin="10dp"
-        android:background="@drawable/btn_item_medium_default"
-        android:drawableLeft="@mipmap/ic_user_pwd"
-        android:drawablePadding="10dp"
-        android:ellipsize="end"
-        android:gravity="center_vertical"
-        android:hint="请输入密码"
-        android:inputType="textPassword"
-        android:paddingLeft="4dp"
-        android:singleLine="true" />
-
-    <Spinner
-        android:id="@+id/Spinner_identify"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="5dip"
-        android:visibility="gone" />
-
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_margin="10dp"
-        android:background="#D64F4D"
-        android:text="登录"
-        android:textColor="#FFFFFF" />
-
-    <TextView
-        android:id="@+id/register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginTop="10dip"
-        android:layout_marginRight="15dip"
-        android:padding="5dip"
-        android:text="立即注册 >>"
-        android:textSize="18sp" />
     </LinearLayout>
-</LinearLayout>
+
+    <View
+        android:id="@+id/scrollView"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toBottomOf="@id/imageHeader"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/login_background"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scrollView">
+
+        <TextView
+            android:id="@+id/textWelcome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:text="@string/welcome"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintTop_toTopOf="parent" />
+        <!--输入用户名开始-->
+        <EditText
+            android:id="@+id/et_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:background="@null"
+            android:drawableLeft="@mipmap/ic_user_info"
+            android:drawablePadding="10dp"
+            android:hint="@string/hint_user"
+            android:inputType="number"
+            android:paddingStart="20dp"
+            android:paddingEnd="10dp"
+            android:textColor="#ccc"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@id/textWelcome"
+            tools:ignore="Autofill" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="#ccc"
+            app:layout_constraintBottom_toBottomOf="@+id/et_username" />
+        <!--输入用户名结束-->
+
+
+        <!--输入密码开始-->
+
+        <EditText
+            android:id="@+id/et_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="10dp"
+            android:background="@null"
+            android:drawableLeft="@mipmap/ic_user_pwd"
+            android:drawablePadding="10dp"
+            android:hint="请输入密码"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:paddingStart="20dp"
+            android:paddingEnd="10dp"
+            android:textColor="#ccc"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@+id/et_username" />
+
+
+        <View
+            android:id="@+id/password_View"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="#ccc"
+            app:layout_constraintBottom_toBottomOf="@+id/et_pwd" />
+
+        <!--去注册开始-->
+        <TextView
+            android:id="@+id/register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="5dp"
+            android:text="去注册 >>"
+            android:textColor="#ccc"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_pwd" />
+        <!--去注册结束-->
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:orientation="vertical"-->
+    <!--        android:background="@drawable/login_background">-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/user_view"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="center"-->
+    <!--        android:layout_marginTop="15dip"-->
+    <!--        android:ellipsize="marquee"-->
+    <!--        android:focusable="true"-->
+    <!--        android:focusableInTouchMode="true"-->
+    <!--        android:marqueeRepeatLimit="marquee_forever"-->
+    <!--        android:scrollHorizontally="true"-->
+    <!--        android:singleLine="true"-->
+    <!--        android:text="欢迎使用教室预约系统用户端"-->
+    <!--        android:textSize="20sp"-->
+    <!--        android:textStyle="bold" />-->
+
+    <!--    <EditText-->
+    <!--        android:id="@+id/et_username"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="48dp"-->
+    <!--        android:layout_margin="10dp"-->
+    <!--        android:background="@drawable/btn_item_medium_default"-->
+    <!--        android:drawableLeft="@mipmap/ic_user_info"-->
+    <!--        android:drawablePadding="10dp"-->
+    <!--        android:ellipsize="end"-->
+    <!--        android:gravity="center_vertical"-->
+    <!--        android:hint="请输入用户名"-->
+    <!--        android:paddingLeft="4dp"-->
+    <!--        android:singleLine="true" />-->
+
+    <!--    <ImageButton-->
+    <!--        android:id="@+id/ibtn_del"-->
+    <!--        android:layout_width="48dp"-->
+    <!--        android:layout_height="48dp"-->
+    <!--        android:layout_alignRight="@id/et_username"-->
+    <!--        android:background="@drawable/btn_selector"-->
+    <!--        android:visibility="gone" />-->
+
+    <!--    <EditText-->
+    <!--        android:id="@+id/et_pwd"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="48dp"-->
+    <!--        android:layout_margin="10dp"-->
+    <!--        android:background="@drawable/btn_item_medium_default"-->
+    <!--        android:drawableLeft="@mipmap/ic_user_pwd"-->
+    <!--        android:drawablePadding="10dp"-->
+    <!--        android:ellipsize="end"-->
+    <!--        android:gravity="center_vertical"-->
+    <!--        android:hint="请输入密码"-->
+    <!--        android:inputType="textPassword"-->
+    <!--        android:paddingLeft="4dp"-->
+    <!--        android:singleLine="true" />-->
+
+    <!--    <Spinner-->
+    <!--        android:id="@+id/Spinner_identify"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="48dp"-->
+    <!--        android:layout_marginTop="5dip"-->
+    <!--        android:visibility="gone" />-->
+
+    <!--    <Button-->
+    <!--        android:id="@+id/btn_login"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="48dp"-->
+    <!--        android:layout_margin="10dp"-->
+    <!--        android:background="#D64F4D"-->
+    <!--        android:text="登录"-->
+    <!--        android:textColor="#FFFFFF" />-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/register"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="right"-->
+    <!--        android:layout_marginTop="10dip"-->
+    <!--        android:layout_marginRight="15dip"-->
+    <!--        android:padding="5dip"-->
+    <!--        android:text="立即注册 >>"-->
+    <!--        android:textSize="18sp" />-->
+    <!--    </LinearLayout>-->
+</androidx.constraintlayout.widget.ConstraintLayout>
