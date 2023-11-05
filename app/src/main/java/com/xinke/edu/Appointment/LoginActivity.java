@@ -8,7 +8,7 @@ import android.view.View;
 
 
 public class LoginActivity extends AppCompatActivity {
-
+//测试代码
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
