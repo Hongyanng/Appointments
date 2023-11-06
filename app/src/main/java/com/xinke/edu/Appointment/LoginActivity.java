@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xinke.edu.Appointment.entity.Result;
@@ -43,6 +44,8 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.et_pwd)
     EditText passwordStr;
 
+    @BindView(R.id.register)
+    TextView register;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +73,9 @@ public class LoginActivity extends AppCompatActivity {
                     .baseUrl(RetrofitApi.BaseUrl)
                     .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                     .build();
-//实例化对象接受服务器的信息
+            //实例化对象接受服务器的信息
             RetrofitApi retrofitApi = retrofit.create(RetrofitApi.class);
-//观察者模式用于判断是否服务器故障
+            //观察者模式用于判断是否服务器故障
             retrofitApi.login(username, password)
                     .subscribeOn(Schedulers.io())
                     .timeout(10, TimeUnit.SECONDS) // 设置超时时间为10秒
@@ -84,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
                         @Override
-                        public void onNext(@NonNull Result<User> userResult) {
+                        public void onNext(@NonNull Result<User> result) {
 
                         }
 
@@ -102,4 +105,13 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * 去注册的点击事件
+     */
+    @OnClick(R.id.register)
+    public void setRegister(View view){
+        Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+        startActivity(intent);
+    }
 }
