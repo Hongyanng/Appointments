@@ -31,7 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
- *注册页面
+ * 注册页面
  */
 public class RegisterActivity extends AppCompatActivity {
     /*注解绑定*/
@@ -71,7 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.btn_register)
-    public void register(){
+    public void register() {
         String fullname = fullnameStr.getText().toString();
         String username = usernameStr.getText().toString();
         String password = passwordStr.getText().toString();
@@ -81,7 +81,7 @@ public class RegisterActivity extends AppCompatActivity {
         if (username.isEmpty() && password.isEmpty()) {
             // 输入的账号或密码为空，显示错误消息或采取其他措施
             Toast.makeText(this, "账号和密码不能为空", Toast.LENGTH_SHORT).show();
-        }else {
+        } else {
             //发送请求
             Retrofit retrofit = new Retrofit.Builder()
                     .addConverterFactory(GsonConverterFactory.create())
@@ -92,12 +92,11 @@ public class RegisterActivity extends AppCompatActivity {
             RetrofitApi retrofitApi = retrofit.create(RetrofitApi.class);
 
             User user = new User();
-            user.setFull_name(fullname);
-            user.setUser_name(username);
+            user.setFullName(fullname);
+            user.setUserName(username);
             user.setPassword(password);
-            user.setEmail_address(email);
-            user.setPhone_number(phone);
-
+            user.setEmailAddress(email);
+            user.setPhoneNumber(phone);
 
 
             retrofitApi.register(user)
@@ -112,11 +111,11 @@ public class RegisterActivity extends AppCompatActivity {
 
                         @Override
                         public void onNext(@NonNull Result result) {
-                            if (result.getCode() == Result.FAIL){
-                                Toast.makeText(RegisterActivity.this,result.getMsg(),Toast.LENGTH_SHORT).show();
+                            if (result.getCode() == Result.FAIL) {
+                                Toast.makeText(RegisterActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
                                 return;
-                            }else {
-                                Toast.makeText(RegisterActivity.this,result.getMsg(),Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(RegisterActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
                             }
                         }
 

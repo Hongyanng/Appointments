@@ -11,11 +11,11 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 public interface RetrofitApi {
-    String BaseUrl = "http://47.120.33.193:8081/user/";
+    String BaseUrl = "http://47.120.33.193:8081";
 
     @POST("user/login")
-    @FormUrlEncoded
-    Observable<Result<User>> login(@Field("user_name") String user_name, @Field("password") String password);
+    @Headers({"Content-Type:application/json","Accept:application/json"})
+    Observable<Result> login(@Body User user);
 
     @POST("user/register")
     @Headers({"Content-Type:application/json","Accept:application/json"})

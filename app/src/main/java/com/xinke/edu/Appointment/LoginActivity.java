@@ -52,15 +52,16 @@ public class LoginActivity extends AppCompatActivity {
 
 
     /*获取身份*/
-    //教师
+    //教师1
     @BindView(R.id.rb_teacher)
     RadioButton MyRadiorbTeacher;
 
-    //学生
+    //学生2
     @BindView(R.id.rb_student)
     RadioButton MyRadioStudent;
 
-    //初始化 老师学生身份
+
+    //初始化老师学生身份
     int authenticationStatus;
 
     @Override
