@@ -11,13 +11,13 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 public interface RetrofitApi {
-    String BaseUrl = "http://47.120.33.193:8081/";
+    String BaseUrl = "http://47.120.33.193:8081/user/";
 
-
-    /**
-     * 登录的请求接口
-     */
     @POST("user/login")
-    @Headers({"Content-Type: application/json","Accept: application/json"})
-    Observable<Result> login(@Body User user);
+    @FormUrlEncoded
+    Observable<Result<User>> login(@Field("user_name") String user_name, @Field("password") String password);
+
+    @POST("user/register")
+    @Headers({"Content-Type:application/json","Accept:application/json"})
+    Observable<Result> register(@Body User user);
 }
