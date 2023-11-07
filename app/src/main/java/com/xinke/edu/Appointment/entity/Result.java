@@ -9,8 +9,8 @@ import java.util.List;
  */
 
 public class Result<T> {
-    public static final int SUCCESS = 100;
-    public static final int FAIL = 200;
+    public static final int SUCCESS = 200;
+    public static final int FAIL = 100;
     int code;//编码：200成功
     String msg;//错误信息
     T data;//数据
