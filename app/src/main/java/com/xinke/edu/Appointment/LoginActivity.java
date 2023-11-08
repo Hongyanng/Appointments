@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.xinke.edu.Appointment.entity.Result;
@@ -132,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(LoginActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
                                 return;
                             } else {
-                                Toast.makeText(LoginActivity.this, result.getData().toString(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -166,8 +167,9 @@ public class LoginActivity extends AppCompatActivity {
      * 跳转注册
      */
     @OnClick(R.id.register)
-    public void Register(View view){
-
+    public void Register(View view) {
+        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+        startActivity(intent);
     }
 
 

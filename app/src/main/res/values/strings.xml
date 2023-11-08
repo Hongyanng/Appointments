@@ -7,4 +7,5 @@
     <string name="student">学生</string>
     <string name="teacher">教师</string>
     <string name="register"><![CDATA[没有账号?去注册 >>]]></string>
+    <string name="Appointment">教室预约系统APP</string>
 </resources>
