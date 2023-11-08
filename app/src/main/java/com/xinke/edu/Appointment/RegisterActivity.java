@@ -1,13 +1,20 @@
 package com.xinke.edu.Appointment;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.xinke.edu.Appointment.entity.Result;
@@ -15,6 +22,8 @@ import com.xinke.edu.Appointment.entity.User;
 import com.xinke.edu.Appointment.net.RetrofitApi;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +37,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import android.text.Editable;
+import android.text.TextWatcher;
 
 
 /**
@@ -43,7 +55,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     /*获取输入的密码paws*/
-    @BindView(R.id.et_pwd)
+    @BindView(R.id.et_password)
     EditText passwordStr;
 
     /*获取输入的姓名*/
@@ -59,76 +71,286 @@ public class RegisterActivity extends AppCompatActivity {
     EditText phoneStr;
 
 
-    /*获取辅导员*/
-    @BindView(R.id.teacher)
-    Spinner teacher;
+    /*获取身份*/
+    //教师1
+    @BindView(R.id.rb_teacher)
+    RadioButton MyRadiorbTeacher;
+
+    //学生2
+    @BindView(R.id.rb_student)
+    RadioButton MyRadioStudent;
+
+    /*辅导员3*/
+    @BindView(R.id.rb_instructor)
+    RadioButton MyInstructor;
+
+    /*获取性别*/
+    @BindView(R.id.radio_male)
+    RadioButton Myradio_male;
+    @BindView(R.id.radio_female)
+    RadioButton Myradio_female;
+
+    //初始化老师学生身份
+    int authenticationStatus;
+
+    //初始化用户性别
+    String gender;
+
+    /*姓名*/
+
+    String fullname;
+
+    /*学号*/
+    String username;
+
+    //密码
+    String password;
+
+    //手机号码
+    String phone;
+
+    // 创建正则表达式用于验证电子邮件格式
+    private static final Pattern EMAIL_PATTERN = Patterns.EMAIL_ADDRESS;
+
+
+    String email;
+
+    /*加载动画*/
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this); // 绑定视图
+
+        //邮箱地址监听事件
+        emailStr.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String email = s.toString();
+                if (!isValidEmail(email)) {
+                    emailStr.setError("电子邮件地址格式错误");
+                }
+            }
+        });
+
+        //姓名不能为纯数字监听事件
+        fullnameStr.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String name = s.toString();
+                if (isNumeric(name)) {
+                    fullnameStr.setError("姓名不允许为纯数字");
+                }
+            }
+        });
+
+
+    }
+
+    //关闭按钮
+    @OnClick(R.id.off)
+    public void OFF() {
+        finish();
     }
 
     @OnClick(R.id.btn_register)
     public void register() {
-        String fullname = fullnameStr.getText().toString();
-        String username = usernameStr.getText().toString();
-        String password = passwordStr.getText().toString();
-        String email = emailStr.getText().toString();
-        String phone = phoneStr.getText().toString();
-
-        if (username.isEmpty() && password.isEmpty()) {
-            // 输入的账号或密码为空，显示错误消息或采取其他措施
-            Toast.makeText(this, "账号和密码不能为空", Toast.LENGTH_SHORT).show();
-        } else {
-            //发送请求
-            Retrofit retrofit = new Retrofit.Builder()
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .baseUrl(RetrofitApi.BaseUrl)
-                    .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-                    .build();
-            //实例化对象接受服务器的信息
-            RetrofitApi retrofitApi = retrofit.create(RetrofitApi.class);
-
-            User user = new User();
-            user.setFullName(fullname);
-            user.setUserName(username);
-            user.setPassword(password);
-            user.setEmailAddress(email);
-            user.setPhoneNumber(phone);
-
-
-            retrofitApi.register(user)
-                    .subscribeOn(Schedulers.io())
-                    .timeout(10, TimeUnit.SECONDS)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<Result>() {
-                        @Override
-                        public void onSubscribe(@NonNull Disposable d) {
-
-                        }
-
-                        @Override
-                        public void onNext(@NonNull Result result) {
-                            if (result.getCode() == Result.FAIL) {
-                                Toast.makeText(RegisterActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
-                                return;
-                            } else {
-                                Toast.makeText(RegisterActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onError(@NonNull Throwable e) {
-                            e.printStackTrace();
-                        }
-
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
+        if (!validateInputs()) {
+            return;
         }
+        fullname = fullnameStr.getText().toString();
+        username = usernameStr.getText().toString();
+        password = passwordStr.getText().toString();
+        email = emailStr.getText().toString();
+        phone = phoneStr.getText().toString();
+
+        //发送请求
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(RetrofitApi.BaseUrl)
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                .build();
+        //实例化对象接受服务器的信息
+        RetrofitApi retrofitApi = retrofit.create(RetrofitApi.class);
+
+        User user = new User();
+        user.setFullName(fullname);
+        user.setUserName(username);
+        user.setPassword(password);
+        user.setEmailAddress(email);
+        user.setPhoneNumber(phone);
+        user.setAuthenticationStatus(authenticationStatus);
+        user.setGender(gender);
+
+
+        retrofitApi.register(user)
+                .subscribeOn(Schedulers.io())
+                .timeout(10, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Result>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Result result) {
+                        if (result.getCode() == Result.FAIL) {
+                            Toast.makeText(RegisterActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
+                            return;
+                        } else {
+                            //注册成功后弹出一个选择框，询问用户是否返回登录页面
+                            showSuccessDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        e.printStackTrace();
+                        // 发生错误时的操作
+                        if (e instanceof TimeoutException) {
+                            // 请求超时
+                            progressDialog.dismiss();
+                            Toast.makeText(RegisterActivity.this, "服务器请求超时", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // 其他服务器错误
+                            Log.e("onError", e.toString());
+                            progressDialog.dismiss();
+                            Toast.makeText(RegisterActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        // 完成时的操作
+                    }
+                });
     }
+
+
+    //判断是否为空
+    private boolean isValidEmail(String email) {
+        return EMAIL_PATTERN.matcher(email).matches();
+    }
+
+
+    //约束用户
+    private boolean validateInputs() {
+
+
+        if (MyRadiorbTeacher.isChecked()) {
+            authenticationStatus = 1;
+        } else if (MyRadioStudent.isChecked()) {
+            authenticationStatus = 2;
+        } else if (MyInstructor.isChecked()) {
+            authenticationStatus = 3;
+        } else {
+            Toast.makeText(RegisterActivity.this, "请先选中用户身份", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        // 检查学号是否为空
+        if (usernameStr.getText().toString().isEmpty()) {
+            usernameStr.setError("学号不能为空");
+            return false;
+        }
+        // 检查密码是否为空
+        if (passwordStr.getText().toString().isEmpty()) {
+            passwordStr.setError("密码不能为空");
+            return false;
+        }
+
+
+        if (Myradio_male.isChecked()) {
+            gender = "男";
+        } else if (Myradio_female.isChecked()) {
+            gender = "女";
+        } else {
+            Toast.makeText(RegisterActivity.this, "请先选中用户性别", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+
+        // 检查姓名是否为空
+        if (fullnameStr.getText().toString().isEmpty()) {
+            fullnameStr.setError("姓名不能为空");
+            return false;
+        }
+
+
+        if (!isValidEmail(emailStr.getText().toString())) {
+            emailStr.setError("电子邮件地址格式错误");
+            return false;
+        }
+
+
+        // 检查手机号是否为空
+        if (phoneStr.getText().toString().isEmpty()) {
+            phoneStr.setError("手机号码不能为空");
+            return false;
+        }
+
+
+        return true;
+    }
+
+    // 判断是否为纯数字的方法
+    private boolean isNumeric(String str) {
+        if (str == null || str.isEmpty()) {
+            return false;
+        }
+        // 使用正则表达式检查是否包含数字
+        return str.matches(".*\\d.*");
+    }
+
+
+    //
+    // 显示注册成功对话框
+    private void showSuccessDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("注册成功");
+        builder.setMessage("注册成功！是否要返回到登录页面？");
+
+        builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        builder.setNegativeButton("否", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 }

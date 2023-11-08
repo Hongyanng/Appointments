@@ -75,6 +75,16 @@
                 android:layout_marginStart="50dp"
                 android:text="@string/student"
                 android:textColor="#524F4F" />
+
+            <RadioButton
+                android:id="@+id/rb_instructor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:text="@string/instructor"
+                android:textColor="#524F4F" />
+
+
         </RadioGroup>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -105,7 +115,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:background="@null"
-                android:hint="请输入学号"
+                android:hint="请输入学号或教职工号"
                 android:inputType="number"
                 android:textSize="14sp" />
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -215,7 +225,7 @@
                 android:src="@drawable/ic_person_black_24dp" />
 
             <EditText
-                android:id="@+id/et_name"
+                android:id="@+id/et_full_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
@@ -242,7 +252,7 @@
                 android:src="@drawable/ic_email_black_24dp" />
 
             <EditText
-                android:id="@+id/et_email"
+                android:id="@+id/email_address"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
@@ -270,7 +280,7 @@
                 android:src="@drawable/ic_smartphone_black_24dp" />
 
             <EditText
-                android:id="@+id/et_phone"
+                android:id="@+id/phone_number"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
@@ -284,7 +294,7 @@
 
 
         <Button
-            android:id="@+id/login"
+            android:id="@+id/btn_register"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"

@@ -55,4 +55,14 @@
     <color name="bg">#2B2B2B</color>
     <color name="btn_item_stroke_color">#E0E0E0</color>
     <color name="hint_color">#666</color>
+    
+
+    <!--首页的颜色-->
+    <color name="Primary">#673AB7</color>
+    <color name="PrimaryDark">#512DA8</color>
+    <color name="Accent">#FF5252</color>
+    <color name="colorPrimaaryText">#212121</color>
+    <color name="colorwhite">#FFFFFF</color>
+    <color name="colorGreen">#32CD32</color>
+
 </resources>
