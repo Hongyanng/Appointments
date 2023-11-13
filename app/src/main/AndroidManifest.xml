@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
+        android:requiredForAllUsers="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -20,11 +21,7 @@
         <activity
             android:name="com.xinke.edu.Appointment.LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FuIIScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- //注册-->
@@ -32,6 +29,18 @@
 
         <!-- //首页-->
         <activity android:name=".HomeActivity"></activity>
+
+        <!-- //学生的首页布局-->
+        <activity android:name=".Student_Menu_Activity"></activity>
+
+        <!--启动页-->
+        <activity android:name=".Dialog.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
 
     </application>

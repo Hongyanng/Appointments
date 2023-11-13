@@ -124,6 +124,8 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this); // 绑定视图
 
+
+
         //邮箱地址监听事件
         emailStr.addTextChangedListener(new TextWatcher() {
             @Override

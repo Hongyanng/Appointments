@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.xinke.edu.Appointment.entity.Result;
 import com.xinke.edu.Appointment.entity.User;
 import com.xinke.edu.Appointment.net.RetrofitApi;
+import com.xinke.edu.Appointment.token.SharedPreferencesUtils;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -64,6 +66,11 @@ public class LoginActivity extends AppCompatActivity {
 
     //初始化老师学生身份
     int authenticationStatus;
+
+
+    // 在SharedPreferences中为token声明一个常量键
+    private static final String PREF_KEY_TOKEN = "token";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,12 +136,17 @@ public class LoginActivity extends AppCompatActivity {
                         public void onNext(@NonNull Result result) {
                             /*是否成功请求*/
                             if (result.getCode() == Result.FAIL) {
-                                //错误提示
+                                // 错误提示
                                 Toast.makeText(LoginActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
                                 return;
                             } else {
                                 Toast.makeText(LoginActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                /*登录成功后服务器返回token*/
+                                SharedPreferencesUtils.setParam(LoginActivity.this,"token",result.getToken());
+                                Intent intent = new Intent(LoginActivity.this, Student_Menu_Activity.class);
+                                startActivity(intent);
                             }
+
                         }
 
                         @Override
@@ -171,6 +183,12 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(intent);
     }
+
+
+    /**
+     * token
+     */
+    // 保存token到SharedPreferences的方法
 
 
 }

@@ -9,4 +9,14 @@
     <string name="register"><![CDATA[没有账号?去注册 >>]]></string>
     <string name="Appointment">教室预约系统APP</string>
     <string name="instructor">辅导员</string>
+    <string name="profile">我的信息</string>
+    <string name="collection">我的收藏</string>
+    <string name="inbox">我的资讯</string>
+    <string name="notification">即时通知</string>
+    <string name="orders">我的预约</string>
+    <string name="setting">设置</string>
+    <string name="support">联系我们</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

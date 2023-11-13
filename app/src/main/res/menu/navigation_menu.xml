@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_username"
+        android:icon="@mipmap/profile"
+        android:title="@string/profile" />
+
+
+    <item
+        android:id="@+id/menu_collection"
+        android:icon="@mipmap/collection"
+        android:title="@string/collection" />
+
+    <item
+        android:id="@+id/menu_inbox"
+        android:icon="@mipmap/inbox"
+        android:title="@string/inbox" />
+
+
+    <item
+        android:id="@+id/menu_notification"
+        android:icon="@mipmap/notification"
+        android:title="@string/notification" />
+
+
+    <item android:title="更多">
+        <menu>
+            <item
+                android:id="@+id/menu_orders"
+                android:icon="@mipmap/orders"
+                android:title="@string/orders" />
+            <item
+                android:id="@+id/menu_setting"
+                android:icon="@mipmap/setting"
+                android:title="@string/setting" />
+
+            <item
+                android:id="@+id/menu_support"
+                android:icon="@mipmap/support"
+                android:title="@string/support" />
+        </menu>
+    </item>
+
+</menu>

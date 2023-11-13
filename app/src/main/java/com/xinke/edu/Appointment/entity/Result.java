@@ -16,6 +16,16 @@ public class Result<T> {
     T data;//数据
     List<T> datas;
 
+    String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     public static int getSUCCESS() {
         return SUCCESS;
     }
