@@ -13,11 +13,15 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.xinke.edu.Appointment.entity.Result;
 import com.xinke.edu.Appointment.entity.User;
 import com.xinke.edu.Appointment.net.RetrofitApi;
 import com.xinke.edu.Appointment.token.SharedPreferencesUtils;
 
+import java.io.IOException;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -72,6 +76,9 @@ public class LoginActivity extends AppCompatActivity {
     private static final String PREF_KEY_TOKEN = "token";
 
 
+    User user;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
             //实例化对象接受服务器的信息
             RetrofitApi retrofitApi = retrofit.create(RetrofitApi.class);
 
-            User user = new User();
+            user = new User();
             user.setUserName(username);
             user.setPassword(password);
             user.setAuthenticationStatus(authenticationStatus);
@@ -140,9 +147,32 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(LoginActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
                                 return;
                             } else {
-                                Toast.makeText(LoginActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
+
+                                // 检查服务器返回的数据是否为 null
+                                if (result.getData() != null) {
+                                    // 保存token到SharedPreferences
+                                    String token = result.getData().getToken();
+
+                                    // 获取用户的用户名
+                                    String userName = result.getData().getUserName();
+
+                                    // 获取用户的姓名
+                                    String fullName = result.getData().getFullName();
+
+
+                                    Log.i("Token", token);
+                                    Log.i("userName", userName);
+                                    Log.i("fullName", fullName);
+
+                                    /*拿到用户的信息后用工具类存起来*/
+                                    SharedPreferencesUtils.setParam(LoginActivity.this, "token", token);
+                                    SharedPreferencesUtils.setParam(LoginActivity.this, "userName", userName);
+                                    SharedPreferencesUtils.setParam(LoginActivity.this, "fullName", fullName);
+                                } else {
+                                    // 处理 data 为 null 的情况
+                                    Toast.makeText(LoginActivity.this, "服务器返回的数据为空", Toast.LENGTH_SHORT).show();
+                                }
                                 /*登录成功后服务器返回token*/
-                                SharedPreferencesUtils.setParam(LoginActivity.this,"token",result.getToken());
                                 Intent intent = new Intent(LoginActivity.this, Student_Menu_Activity.class);
                                 startActivity(intent);
                             }

@@ -10,13 +10,30 @@ import java.util.List;
 
 public class Result<T> {
     public static final int SUCCESS = 200;
-    public static final int FAIL = 100;
+    public static final int FAIL = 201;
     int code;//编码：200成功
     String msg;//错误信息
-    T data;//数据
-    List<T> datas;
+    User data;//数据
+    List<User> datas;
+
 
     String token;
+
+    public User getData() {
+        return data;
+    }
+
+    public void setData(User data) {
+        this.data = data;
+    }
+
+    public List<User> getDatas() {
+        return datas;
+    }
+
+    public void setDatas(List<User> datas) {
+        this.datas = datas;
+    }
 
     public String getToken() {
         return token;
@@ -50,19 +67,4 @@ public class Result<T> {
         this.msg = msg;
     }
 
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
-
-    public List<T> getDatas() {
-        return datas;
-    }
-
-    public void setDatas(List<T> datas) {
-        this.datas = datas;
-    }
 }

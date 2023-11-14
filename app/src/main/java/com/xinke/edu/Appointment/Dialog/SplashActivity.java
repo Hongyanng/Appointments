@@ -38,7 +38,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
 
-    TimeCount timeCount;
+//    TimeCount timeCount;
 
 
     Button button;
@@ -50,50 +50,50 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.splash_screen);
 
         //点击跳过
-        initViews();
+//        initViews();
 
         //
         handler.postDelayed(runnable,3000);
 
-        timeCount=new TimeCount(4000,1000);
-        timeCount.start();
+//        timeCount=new TimeCount(4000,1000);
+//        timeCount.start();
     }
 
 
-    public void initViews() {
-        button = findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tomainActivity();
-            }
-        });
-    }
+//    public void initViews() {
+//        button = findViewById(R.id.button);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                tomainActivity();
+//            }
+//        });
+//    }
 
 
-   class TimeCount extends CountDownTimer{
-
-       /**
-        * @param millisInFuture    The number of millis in the future from the call
-        *                          to {@link #start()} until the countdown is done and {@link #onFinish()}
-        *                          is called.
-        * @param countDownInterval The interval along the way to receive
-        *                          {@link #onTick(long)} callbacks.
-        */
-       public TimeCount(long millisInFuture, long countDownInterval) {
-           super(millisInFuture, countDownInterval);
-       }
-
-       @SuppressLint("SetTextI18n")
-       @Override
-       public void onTick(long l) {
-            button.setText(l/1000+ "秒");
-       }
-
-       @Override
-       public void onFinish() {
-
-       }
-   }
+//   class TimeCount extends CountDownTimer{
+//
+//       /**
+//        * @param millisInFuture    The number of millis in the future from the call
+//        *                          to {@link #start()} until the countdown is done and {@link #onFinish()}
+//        *                          is called.
+//        * @param countDownInterval The interval along the way to receive
+//        *                          {@link #onTick(long)} callbacks.
+//        */
+//       public TimeCount(long millisInFuture, long countDownInterval) {
+//           super(millisInFuture, countDownInterval);
+//       }
+//
+//       @SuppressLint("SetTextI18n")
+//       @Override
+//       public void onTick(long l) {
+//            button.setText(l/1000+ "秒");
+//       }
+//
+//       @Override
+//       public void onFinish() {
+//
+//       }
+//   }
 
 }

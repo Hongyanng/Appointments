@@ -12,7 +12,7 @@
         android:layout_height="wrap_content">
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="160dp"
             android:scaleType="centerCrop"
             android:src="@mipmap/result_log" />
 
@@ -166,47 +166,7 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-        <!--选择性别-->
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:gravity="center"
-                android:text="请选择性别"
-                android:textColor="#ccc"
-                android:textSize="16sp" />
-
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/radio_male"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:text="男"
-                    android:textColor="#525151"
-                    android:textSize="14sp" />
-
-                <RadioButton
-                    android:id="@+id/radio_female"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="女"
-                    android:textColor="#525151"
-                    android:textSize="14sp" />
-            </RadioGroup>
-        </androidx.appcompat.widget.LinearLayoutCompat>
 
 
         <!--添加姓名开始-->
@@ -289,6 +249,56 @@
                 android:inputType="phone"
                 android:textSize="14sp" />
         </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
+
+
+        <!--选择性别-->
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="请选择性别"
+                android:textColor="#ccc"
+                android:textSize="16sp" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radio_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="男"
+                    android:textColor="#525151"
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/radio_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="女"
+                    android:textColor="#525151"
+                    android:textSize="14sp" />
+            </RadioGroup>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
 
         <!--添加手机字段结束-->
 
