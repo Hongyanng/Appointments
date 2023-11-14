@@ -1,19 +1,71 @@
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/swipeRefreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.xinke.edu.Appointment.fragment.Student_Fragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <!-- 顶部搜索栏 -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:layout_gravity="bottom">
+        android:orientation="horizontal"
+        android:padding="5dp">
 
+        <ImageView
+            android:id="@+id/bell"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/bell" />
 
+        <EditText
+            android:id="@+id/ed_student"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/student_edit_bg"
+            android:hint="请输入资源所在区域或者资源类型"
+            android:inputType="text"
+            android:padding="10dp" />
+
+        <ImageView
+            android:id="@+id/search"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/search" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp">
+
+        <!-- ViewPager 用于轮播图 -->
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@+id/ed_student"
+            android:layout_margin="20dp" />
+
+    </LinearLayout>
+    <!-- 底部导航栏 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:baselineAligned="false">
+
+        <!-- 导航栏选项 - 首页 -->
         <LinearLayout
-            android:id="@+id/id_tab_weixin"
+            android:id="@+id/shouye"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -21,16 +73,16 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:id="@+id/id_tab_weixin_img"
+                android:id="@+id/id_tab_home_img"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="#fafafa"
                 android:clickable="false"
-                android:scaleType="center" />
-
+                android:scaleType="center"
+                android:src="@mipmap/home" />
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/textView_home"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="false"
@@ -40,8 +92,9 @@
 
         </LinearLayout>
 
+        <!-- 导航栏选项 - 预约记录 -->
         <LinearLayout
-            android:id="@+id/id_tab_frd"
+            android:id="@+id/id_tab_my_appointments"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -49,50 +102,28 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:id="@+id/id_tab_frd_img"
-                android:layout_width="match_parent"
-                android:layout_height="42dp"
-                android:background="#fafafa"
-                android:clickable="false"
-                android:contentDescription="@string/app_name" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="false"
-                android:gravity="center"
-                android:text="通讯录"
-                android:textSize="15sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/id_tab_contact"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <ImageButton
-                android:id="@+id/id_tab_contact_img"
+                android:id="@+id/id_tab_my_appointments_img"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="#fafafa"
-                android:clickable="false" />
+                android:clickable="false"
+                android:scaleType="center"
+                android:src="@mipmap/appointments" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/textView_my_appointments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="false"
                 android:gravity="center"
-                android:text="朋友圈"
+                android:text="我的预约"
                 android:textSize="15sp" />
+
         </LinearLayout>
 
+        <!-- 导航栏选项 - 其他功能1 -->
         <LinearLayout
-            android:id="@+id/id_tab_settings"
+            android:id="@+id/id_tab_other1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -100,22 +131,55 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:id="@+id/id_tab_settings_img"
+                android:id="@+id/id_tab_other1_img"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="#fafafa"
-                android:clickable="false" />
+                android:clickable="false"
+                android:scaleType="center"
+                android:src="@mipmap/other" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/textView_other1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="false"
                 android:gravity="center"
-                android:text="我的"
+                android:text="其他功能1"
                 android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <!-- 导航栏选项 - 其他功能2 -->
+        <LinearLayout
+            android:id="@+id/id_tab_other2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/id_tab_other2_img"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="#fafafa"
+                android:clickable="false"
+                android:scaleType="center"
+                android:src="@mipmap/other" />
+
+            <TextView
+                android:id="@+id/textView_other2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:gravity="center"
+                android:text="其他功能2"
+                android:textSize="15sp" />
+
         </LinearLayout>
 
     </LinearLayout>
 
 </FrameLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

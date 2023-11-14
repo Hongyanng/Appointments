@@ -147,18 +147,14 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(LoginActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
                                 return;
                             } else {
-
                                 // 检查服务器返回的数据是否为 null
                                 if (result.getData() != null) {
                                     // 保存token到SharedPreferences
                                     String token = result.getData().getToken();
-
                                     // 获取用户的用户名
                                     String userName = result.getData().getUserName();
-
                                     // 获取用户的姓名
                                     String fullName = result.getData().getFullName();
-
 
                                     Log.i("Token", token);
                                     Log.i("userName", userName);
@@ -168,13 +164,17 @@ public class LoginActivity extends AppCompatActivity {
                                     SharedPreferencesUtils.setParam(LoginActivity.this, "token", token);
                                     SharedPreferencesUtils.setParam(LoginActivity.this, "userName", userName);
                                     SharedPreferencesUtils.setParam(LoginActivity.this, "fullName", fullName);
+
+                                    /*登录成功后服务器返回token*/
+                                    Intent intent = new Intent(LoginActivity.this, Student_Menu_Activity.class);
+                                    startActivity(intent);
+
+                                    // 立即销毁当前的Activity
+                                    finish();
                                 } else {
                                     // 处理 data 为 null 的情况
                                     Toast.makeText(LoginActivity.this, "服务器返回的数据为空", Toast.LENGTH_SHORT).show();
                                 }
-                                /*登录成功后服务器返回token*/
-                                Intent intent = new Intent(LoginActivity.this, Student_Menu_Activity.class);
-                                startActivity(intent);
                             }
 
                         }
