@@ -53,7 +53,7 @@ public class SplashActivity extends AppCompatActivity {
 //        initViews();
 
         //
-        handler.postDelayed(runnable,3000);
+        handler.postDelayed(runnable,2000);
 
 //        timeCount=new TimeCount(4000,1000);
 //        timeCount.start();

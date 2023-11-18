@@ -40,16 +40,31 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
-        <!--添加切换碎片-->
-        <fragment
-            android:id="@+id/navhost_fragment"
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="#ccc"
+            app:layout_constraintTop_toTopOf="@id/tabLayout"/>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/LayoutToolBar"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            app:defaultNavHost="true"
-            app:navGraph="@navigation/main"/>
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:tabIndicatorHeight="3dp"
+            app:tabMode="fixed"
+            app:tabPaddingBottom="8dp"
+            app:tabPaddingTop="15dp"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -62,6 +77,5 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/layout_navigation_header"
         app:menu="@menu/navigation_menu" />
-
 
 </androidx.drawerlayout.widget.DrawerLayout>

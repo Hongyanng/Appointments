@@ -18,6 +18,7 @@ import com.google.gson.JsonParser;
 import com.xinke.edu.Appointment.entity.Result;
 import com.xinke.edu.Appointment.entity.User;
 import com.xinke.edu.Appointment.net.RetrofitApi;
+import com.xinke.edu.Appointment.token.AuthTokenInterceptor;
 import com.xinke.edu.Appointment.token.SharedPreferencesUtils;
 
 import java.io.IOException;
@@ -33,6 +34,7 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -111,8 +113,16 @@ public class LoginActivity extends AppCompatActivity {
             // 输入的账号或密码为空，显示错误消息或采取其他措施
             Toast.makeText(this, "账号和密码不能为空", Toast.LENGTH_SHORT).show();
         } else {
+
+            /*token拦截器*/
+            OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .addInterceptor(new AuthTokenInterceptor(this))
+                    .build();
+
+
             //发送请求
             Retrofit retrofit = new Retrofit.Builder()
+                    .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .baseUrl(RetrofitApi.BaseUrl)
                     .addCallAdapterFactory(RxJava3CallAdapterFactory.create())

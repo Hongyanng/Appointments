@@ -1,7 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="teacher">
-        <item>覃湘媚</item>
-        <item>覃伟峰</item>
+    <!--学校教学楼-->
+    <string-array name="building_names">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+        <item>D</item>
+        <item>E</item>
     </string-array>
+
+
+    <!--学校的楼层-->
+    <string-array name="floor_numbers">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+
+
+    <!--要预约的节数-->
+    <string-array name="period_numbers">
+        <item>1、2</item>
+        <item>3、4</item>
+        <item>5、6</item>
+        <item>7、8</item>
+        <item>9、10</item>
+        <item>11、12</item>
+    </string-array>
+
+
 </resources>
