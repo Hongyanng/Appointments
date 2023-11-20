@@ -39,6 +39,12 @@
                 android:id="@+id/menu_support"
                 android:icon="@mipmap/support"
                 android:title="@string/support" />
+
+            <item
+                android:id="@+id/menu_exit"
+                android:icon="@mipmap/exit"
+                android:title="@string/exituser" />
+
         </menu>
     </item>
 

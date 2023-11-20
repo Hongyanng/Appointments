@@ -33,4 +33,17 @@
     </style>
 
 
+    <!--显示查询空闲教室的样式-->
+        <style name="ClassroomInfoLabel">
+            <item name="android:layout_width">wrap_content</item>
+            <item name="android:layout_height">wrap_content</item>
+            <item name="android:textSize">14sp</item>
+            <item name="android:padding">5dp</item>
+        </style>
+
+        <style name="ClassroomInfoContent" parent="ClassroomInfoLabel">
+        </style>
+
+
+
 </resources>

@@ -2,11 +2,14 @@ package com.xinke.edu.Appointment;
 
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,11 +19,37 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.xinke.edu.Appointment.Adapter.ClassGouAdapter;
+import com.xinke.edu.Appointment.entity.Classrooms;
+import com.xinke.edu.Appointment.entity.Result;
+import com.xinke.edu.Appointment.net.RetrofitApi;
+import com.xinke.edu.Appointment.token.SharedPreferencesUtils;
+import com.xinke.edu.Appointment.token.TokenHeaderInterceptor;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+import butterknife.ButterKnife;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
@@ -33,6 +62,13 @@ public class BlankFragment1 extends Fragment {
     private Spinner spinnerFloor;
     private Spinner spinnerPeriod;
 
+    /*默认系统时间*/
+    String formattedTime;
+
+    /*初始化视图*/
+    RecyclerView recyclerView;
+
+    ClassGouAdapter classGouAdapter;
 
 
     /*时间选择器*/
@@ -45,6 +81,20 @@ public class BlankFragment1 extends Fragment {
     String periodStr;
     String timeStr;
 
+    /*设置显示布局*/
+    TextView tvSelectedBuilding;
+    TextView tvSelectedFloor;
+    TextView tvSelectedPeriod;
+    TextView tvSelectedDate;
+    /*token*/
+    String settoken;
+
+    /*实例化对象*/
+    Classrooms classrooms;
+
+
+    /*加载动画*/
+    ProgressDialog progressDialog;
 
     public BlankFragment1() {
         // Required empty public constructor
@@ -57,17 +107,58 @@ public class BlankFragment1 extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_blank_fragment1, null, false);
 
-        //获取下拉框的id
+
+
+        /*获取token*/
+        settoken = (String) SharedPreferencesUtils.getParam(getContext(), "token", "");
+
+
+        //获取三个下拉框的id
         spinnerBuilding = view.findViewById(R.id.spinnerBuilding);
         spinnerFloor = view.findViewById(R.id.spinnerFloor);
         spinnerPeriod = view.findViewById(R.id.spinnerPeriod);
 
+        /*获取用户选择信息的id*/
+        tvSelectedBuilding = view.findViewById(R.id.tvSelectedBuilding);
+        tvSelectedFloor = view.findViewById(R.id.tvSelectedFloor);
+        tvSelectedPeriod = view.findViewById(R.id.tvSelectedPeriod);
+        tvSelectedDate = view.findViewById(R.id.tvSelectedDate);
 
-        // 初始化 Spinner
+
+        /*实例化适配器*/
+        recyclerView = view.findViewById(R.id.recyclerView);
+
+        /*把布局划分成左右两边的代码，后面的2就是分成几份*/
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+
+        /*帮助类实例化*/
+        classGouAdapter = new ClassGouAdapter(new ArrayList<>());
+
+        /*把实例化的帮助类类传入布局*/
+        recyclerView.setAdapter(classGouAdapter);
+
+
+        // 初始化 Spinner  获取下拉框的数据
         initSpinners();
 
 
-        /*时间选择器的方法*/
+
+
+        /*点击查询空闲教室*/
+        LinearLayout inquire = view.findViewById(R.id.inquire);
+        inquire.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GetData();
+            }
+        });
+
+
+
+
+
+
+        /*点击获取时间选择器的方法*/
         btnPickDate = view.findViewById(R.id.btnPickDate);
 
         selectedDate = Calendar.getInstance();
@@ -81,14 +172,17 @@ public class BlankFragment1 extends Fragment {
         });
 
 
-
-
         return view;
 
     }
 
-    /*下拉选择器的方法*/
+    /*默认加载下拉选择器的方法*/
     private void initSpinners() {
+
+        String datetime = CurrentTime();
+        tvSelectedDate.setText("日期:" + datetime);
+
+
         // 设置教学楼名称 Spinner
         ArrayAdapter<CharSequence> buildingAdapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.building_names, android.R.layout.simple_spinner_item);
@@ -114,8 +208,10 @@ public class BlankFragment1 extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedBuilding = parent.getItemAtPosition(position).toString();
-                //把获取到的用变量集成
-                buildingStr=selectedBuilding;
+
+                buildingStr = selectedBuilding;
+                tvSelectedBuilding.setText("楼名: " + buildingStr);
+
             }
 
             @Override
@@ -129,8 +225,10 @@ public class BlankFragment1 extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // 获取选中的楼层
                 String selectedFloorString = parent.getItemAtPosition(position).toString();
-                int selectedFloor = Integer.parseInt(selectedFloorString);
-                floorStr = selectedFloor;
+                String floor = selectedFloorString;
+                floorStr = Integer.parseInt(floor);
+
+                tvSelectedFloor.setText("楼层: " + floorStr);
             }
 
             @Override
@@ -139,47 +237,47 @@ public class BlankFragment1 extends Fragment {
         });
 
         // 设置选择预约节数 Spinner 的选项选择事件
-        spinnerFloor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerPeriod.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedPeriod = parent.getItemAtPosition(position).toString();
-                Log.i("selectedPeriod",selectedPeriod);
-                Resources res = getResources();
-                int[] periodNumbers = res.getIntArray(R.array.period_numbers);
-                Log.i("periodNumbers",periodNumbers.toString());
-
+                // 获取选中的预约节数
+                String selectedPeriodString = parent.getItemAtPosition(position).toString();
+                periodStr = selectedPeriodString;
+                tvSelectedPeriod.setText("节数: " + periodStr);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
-
-
-
     }
 
 
     /*时间选择器的方法*/
-    private void showDatePickerDialog()
-    {
-        // 获取当前日期的年月日
+    private void showDatePickerDialog() {
+        // 获取当前日期
+        Calendar selectedDate = Calendar.getInstance();
+
         int year = selectedDate.get(Calendar.YEAR);
         int month = selectedDate.get(Calendar.MONTH);
         int day = selectedDate.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
-                new DatePickerDialog.OnDateSetListener(){
+                new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         // 更新选定的日期
                         selectedDate.set(Calendar.YEAR, year);
                         selectedDate.set(Calendar.MONTH, month);
-                        selectedDate.set(Calendar.DAY_OF_MONTH, day);
+                        selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
                         // 获取的日期文本用一个字符串保存起来
-                        updateSelectedDateText();
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                        String formattedDate = sdf.format(selectedDate.getTime());
+                        timeStr = formattedDate;
+                        tvSelectedDate.setText("日期:" + timeStr);
+
+
                     }
                 }, year, month, day);
 
@@ -187,12 +285,106 @@ public class BlankFragment1 extends Fragment {
         datePickerDialog.show();
     }
 
-    private void updateSelectedDateText() {
-        // 格式化日期并显示在文本视图中
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        String formattedDate = sdf.format(selectedDate.getTime());
-        timeStr=formattedDate;
+
+    /*okhttp拦截器*/
+    private OkHttpClient.Builder getClient() {
+        OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
+        httpClientBuilder.connectTimeout(15, TimeUnit.SECONDS);
+        httpClientBuilder.addNetworkInterceptor(new TokenHeaderInterceptor(getContext()));
+        return httpClientBuilder;
     }
+
+
+    /*后端获取数据的方法*/
+    public void GetData() {
+        /*获取网络*/
+        Retrofit retrofit = new Retrofit
+                .Builder()
+                .client(getClient().build())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(RetrofitApi.BaseUrl)
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                .build();
+
+
+
+        /*实例化*/
+        RetrofitApi retrofitApi = retrofit.create(RetrofitApi.class);
+
+        classrooms = new Classrooms();
+        classrooms.setBuilding(buildingStr);
+        classrooms.setFloor(floorStr);
+        classrooms.setPeriod(periodStr);
+        classrooms.setTime(timeStr);
+
+        retrofitApi.queryclassroom(classrooms)
+                .observeOn(Schedulers.io())
+                .timeout(10, TimeUnit.SECONDS) // 设置超时时间为10秒
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Result<List<Classrooms>>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        // 显示加载动画
+                        progressDialog = ProgressDialog.show(getContext(), "请稍候", "正在疯狂查询中...", true, false);
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Result<List<Classrooms>> listResult) {
+                        List<Classrooms> data = listResult.getData();
+                        if (data != null && data.size() != 0) {
+                            /*查询成功后结束动画*/
+                            progressDialog.dismiss();
+                            Toast.makeText(getContext(), "查询成功！", Toast.LENGTH_SHORT).show();
+                            classGouAdapter.replaceData(listResult.getData());
+                        } else {
+                            Toast.makeText(getContext(), "没有符合你查询的教室噢QAQ~，请重新选择吧。", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                        e.printStackTrace();
+                        // 发生错误时的操作
+                        if (e instanceof TimeoutException) {
+                            // 请求超时
+                            progressDialog.dismiss();
+                            Toast.makeText(getContext(), "服务器请求超时", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // 其他服务器错误
+                            Log.e("onError", e.toString());
+                            progressDialog.dismiss();
+                            Toast.makeText(getContext(), "服务器错误", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        progressDialog.dismiss();
+                    }
+                });
+
+    }
+
+
+    /*获取系统当前时间*/
+    public String CurrentTime() {
+        // 获取当前时间
+        Date currentTime = new Date();
+
+        // 创建SimpleDateFormat对象，指定日期时间格式
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        // 格式化当前时间
+        formattedTime = sdf.format(currentTime);
+
+        return formattedTime;
+    }
+
+
 }
 
 

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <!--门牌号-->
+            <LinearLayout
+                android:id="@+id/mph"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="教室门牌号"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/classroomId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="特斯拉"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!--教室类型-->
+            <LinearLayout
+                android:id="@+id/jslx"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mph"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="教室类型:"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/classroomType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="特斯拉"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!--座位数-->
+            <LinearLayout
+                android:id="@+id/zws"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/jslx"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="座位数:"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/capacity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="特斯拉"
+                    android:textSize="14sp" />
+            </LinearLayout>
+            <!--座位排布-->
+            <LinearLayout
+                android:id="@+id/zwpb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/zws"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="座位排布:"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/seatingArrangement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="特斯拉"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+
+            <!--教学楼类别-->
+            <LinearLayout
+                android:id="@+id/jxllb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/zwpb"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="教学楼类别:"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/building"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="特斯拉"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+
+            <!--教学楼名-->
+            <LinearLayout
+                android:id="@+id/jxlm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/jxllb"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:text="教学楼名:"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/buildingName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="特斯拉"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+
+            <!--楼层-->
+            <LinearLayout
+                android:id="@+id/lc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/jxlm"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="楼层:"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/floor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="特斯拉"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+
+            <!-- 预约按钮 -->
+            <Button
+                android:id="@+id/reserveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/button_bg"
+                android:text="预约"
+                android:textColor="#FFFFFF" />
+
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

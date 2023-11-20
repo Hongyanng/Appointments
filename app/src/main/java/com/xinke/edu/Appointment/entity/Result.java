@@ -5,6 +5,7 @@ import java.util.List;
 
 /**
  * 接受服务器端返回结果
+ *
  * @param <T>
  */
 
@@ -13,35 +14,27 @@ public class Result<T> {
     public static final int FAIL = 201;
     int code;//编码：200成功
     String msg;//错误信息
-    User data;//数据
-    List<User> datas;
+    /*用户信息的数据*/
+    T data;
+    List<T> datas;
 
 
-    String token;
-
-    public User getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(User data) {
+    public void setData(T data) {
         this.data = data;
     }
 
-    public List<User> getDatas() {
+    public List<T> getDatas() {
         return datas;
     }
 
-    public void setDatas(List<User> datas) {
+    public void setDatas(List<T> datas) {
         this.datas = datas;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 
     public static int getSUCCESS() {
         return SUCCESS;

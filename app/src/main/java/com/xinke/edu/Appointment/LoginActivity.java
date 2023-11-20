@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import com.xinke.edu.Appointment.entity.Result;
 import com.xinke.edu.Appointment.entity.User;
 import com.xinke.edu.Appointment.net.RetrofitApi;
 import com.xinke.edu.Appointment.token.AuthTokenInterceptor;
+import com.xinke.edu.Appointment.token.SPUtils;
 import com.xinke.edu.Appointment.token.SharedPreferencesUtils;
 
 import java.io.IOException;
@@ -80,12 +82,44 @@ public class LoginActivity extends AppCompatActivity {
 
     User user;
 
+    ImageView memorySelector;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this); // 绑定视图
+
+        // 获取记住密码的状态，默认为false
+        boolean rememberPassword = (Boolean) SharedPreferencesUtils.getParam(LoginActivity.this, "UserId", false);
+
+        // 设置记住密码的选择器状态
+        memorySelector = findViewById(R.id.rgb);
+        memorySelector.setSelected(rememberPassword);
+
+        // 设置记住密码选择器的点击事件
+        memorySelector.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean isSelected = !memorySelector.isSelected();
+                memorySelector.setSelected(isSelected);
+
+                // 保存记住密码的状态
+                SharedPreferencesUtils.setParam(LoginActivity.this, "UserId", isSelected);
+            }
+        });
+
+        // 如果记住密码状态为true，则自动填充用户名和密码
+        if (rememberPassword) {
+            // 获取到原来记住的值
+            String savedUsername = (String) SharedPreferencesUtils.getParam(LoginActivity.this, "user", "");
+            String savedPassword = (String) SharedPreferencesUtils.getParam(LoginActivity.this, "pass", "");
+            usernameStr.setText(savedUsername);
+            passwordStr.setText(savedPassword);
+        }
+
+
     }
 
 
@@ -138,10 +172,10 @@ public class LoginActivity extends AppCompatActivity {
 
             //观察者模式用于判断是否服务器故障
             retrofitApi.login(user)
-                    .subscribeOn(Schedulers.io())
+                    .observeOn(Schedulers.io())
                     .timeout(10, TimeUnit.SECONDS) // 设置超时时间为10秒
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<Result>() {
+                    .subscribe(new Observer<Result<User>>() {
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {
                             // 显示加载动画
@@ -150,7 +184,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
                         @Override
-                        public void onNext(@NonNull Result result) {
+                        public void onNext(@NonNull Result<User> result) {
                             /*是否成功请求*/
                             if (result.getCode() == Result.FAIL) {
                                 // 错误提示
@@ -159,28 +193,40 @@ public class LoginActivity extends AppCompatActivity {
                             } else {
                                 // 检查服务器返回的数据是否为 null
                                 if (result.getData() != null) {
-                                    // 保存token到SharedPreferences
+                                    // 获取 token
                                     String token = result.getData().getToken();
-                                    // 获取用户的用户名
+                                    Log.d("token", "   " + token);
+                                    // 获取 userName
                                     String userName = result.getData().getUserName();
-                                    // 获取用户的姓名
+                                    // 获取 fullName
                                     String fullName = result.getData().getFullName();
-
-                                    Log.i("Token", token);
-                                    Log.i("userName", userName);
-                                    Log.i("fullName", fullName);
-
                                     /*拿到用户的信息后用工具类存起来*/
-                                    SharedPreferencesUtils.setParam(LoginActivity.this, "token", token);
-                                    SharedPreferencesUtils.setParam(LoginActivity.this, "userName", userName);
-                                    SharedPreferencesUtils.setParam(LoginActivity.this, "fullName", fullName);
 
-                                    /*登录成功后服务器返回token*/
+                                    SPUtils.put(LoginActivity.this, "token", token);
+                                    SPUtils.put(LoginActivity.this, "userName", userName);
+                                    SPUtils.put(LoginActivity.this, "fullName", fullName);
+
+                                    // 判断是否选中记住密码的选择器
+                                    ImageView memorySelector = findViewById(R.id.rgb);
+                                    boolean rememberPassword = memorySelector.isSelected();
+                                    // 如果记住密码选中了，则保存用户名和密码到系统存储中
+                                    if (rememberPassword) {
+                                        SharedPreferencesUtils.setParam(LoginActivity.this, "user", username);
+                                        SharedPreferencesUtils.setParam(LoginActivity.this, "pass", password);
+                                        /*登录成功后服务器返回token*/
+                                        Intent intent = new Intent(LoginActivity.this, Student_Menu_Activity.class);
+                                        startActivity(intent);
+
+                                        // 立即销毁当前的Activity
+                                        finish();
+                                    }
+                                    /*不记住直接登录不做保存操作*/
                                     Intent intent = new Intent(LoginActivity.this, Student_Menu_Activity.class);
                                     startActivity(intent);
-
                                     // 立即销毁当前的Activity
                                     finish();
+
+
                                 } else {
                                     // 处理 data 为 null 的情况
                                     Toast.makeText(LoginActivity.this, "服务器返回的数据为空", Toast.LENGTH_SHORT).show();
