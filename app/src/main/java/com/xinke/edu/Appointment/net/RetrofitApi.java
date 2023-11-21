@@ -1,6 +1,7 @@
 package com.xinke.edu.Appointment.net;
 
 import com.xinke.edu.Appointment.entity.Classrooms;
+import com.xinke.edu.Appointment.entity.Reservetion;
 import com.xinke.edu.Appointment.entity.Result;
 import com.xinke.edu.Appointment.entity.User;
 
@@ -37,4 +38,13 @@ public interface RetrofitApi {
     @POST("user/searchAvailableClassrooms")
     @Headers({"Content-Type:application/json", "Accept:application/json"})
     Observable<Result<List<Classrooms>>> queryclassroom(@Body Classrooms classrooms);
+
+    /**
+     * 预约教室的接口
+     */
+    @POST("user/reservation")
+    @Headers({"Content-Type:application/json", "Accept:application/json"})
+    Observable<Result> reservation(@Body Reservetion reservation);
+
+
 }

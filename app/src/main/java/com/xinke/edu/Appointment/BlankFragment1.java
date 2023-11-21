@@ -28,6 +28,7 @@ import com.xinke.edu.Appointment.Adapter.ClassGouAdapter;
 import com.xinke.edu.Appointment.entity.Classrooms;
 import com.xinke.edu.Appointment.entity.Result;
 import com.xinke.edu.Appointment.net.RetrofitApi;
+import com.xinke.edu.Appointment.token.SPUtils;
 import com.xinke.edu.Appointment.token.SharedPreferencesUtils;
 import com.xinke.edu.Appointment.token.TokenHeaderInterceptor;
 
@@ -133,6 +134,7 @@ public class BlankFragment1 extends Fragment {
 
         /*帮助类实例化*/
         classGouAdapter = new ClassGouAdapter(new ArrayList<>());
+        classGouAdapter.setContext(getContext());
 
         /*把实例化的帮助类类传入布局*/
         recyclerView.setAdapter(classGouAdapter);
@@ -335,6 +337,24 @@ public class BlankFragment1 extends Fragment {
                             /*查询成功后结束动画*/
                             progressDialog.dismiss();
                             Toast.makeText(getContext(), "查询成功！", Toast.LENGTH_SHORT).show();
+
+                            /*一共获取到的数据*/
+                            int size = data.size();
+
+                            // 获取第一条数据
+                            Classrooms firstClassroom = data.get(0);
+
+                            // 打印或处理第一条数据
+                            Log.d("ClassroomInfo", "Classroom ID: " + firstClassroom.getClassroomId());
+                            Log.d("ClassroomInfo", "Building Name: " + firstClassroom.getBuildingName());
+
+                            /*保存要用预约的时间*/
+                            SPUtils.put(getContext(), "timeStr", timeStr);
+                            /*保存要预约的节数*/
+                            SPUtils.put(getContext(), "periodStr", periodStr);
+
+
+                            // 更新适配器的数据集合
                             classGouAdapter.replaceData(listResult.getData());
                         } else {
                             Toast.makeText(getContext(), "没有符合你查询的教室噢QAQ~，请重新选择吧。", Toast.LENGTH_SHORT).show();

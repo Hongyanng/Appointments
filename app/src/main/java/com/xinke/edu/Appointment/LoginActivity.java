@@ -200,11 +200,16 @@ public class LoginActivity extends AppCompatActivity {
                                     String userName = result.getData().getUserName();
                                     // 获取 fullName
                                     String fullName = result.getData().getFullName();
+
+
+
                                     /*拿到用户的信息后用工具类存起来*/
+                                    int userId=result.getData().getUserId();
 
                                     SPUtils.put(LoginActivity.this, "token", token);
                                     SPUtils.put(LoginActivity.this, "userName", userName);
                                     SPUtils.put(LoginActivity.this, "fullName", fullName);
+                                    SPUtils.put(LoginActivity.this, "userId", userId);
 
                                     // 判断是否选中记住密码的选择器
                                     ImageView memorySelector = findViewById(R.id.rgb);
