@@ -3,6 +3,7 @@ package com.xinke.edu.Appointment;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.icu.util.Calendar;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,11 +84,12 @@ public class BlankFragment1 extends Fragment {
     String periodStr;
     String timeStr;
 
-    /*设置显示布局*/
+    /*设置用户显示显示布局*/
     TextView tvSelectedBuilding;
     TextView tvSelectedFloor;
     TextView tvSelectedPeriod;
     TextView tvSelectedDate;
+
     /*token*/
     String settoken;
 
@@ -97,9 +100,18 @@ public class BlankFragment1 extends Fragment {
     /*加载动画*/
     ProgressDialog progressDialog;
 
+
+    /*布局的id*/
+    LinearLayout inquire, selectLayout;
+
+    /*当天的日期*/
+    String datetime;
+
     public BlankFragment1() {
         // Required empty public constructor
     }
+
+
 
 
     @Override
@@ -107,6 +119,7 @@ public class BlankFragment1 extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_blank_fragment1, null, false);
+
 
 
 
@@ -147,7 +160,7 @@ public class BlankFragment1 extends Fragment {
 
 
         /*点击查询空闲教室*/
-        LinearLayout inquire = view.findViewById(R.id.inquire);
+        inquire = view.findViewById(R.id.inquire);
         inquire.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,6 +168,15 @@ public class BlankFragment1 extends Fragment {
             }
         });
 
+        /*点击查看我的预约*/
+        selectLayout = view.findViewById(R.id.selectLayout);
+        selectLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MyreservationActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
 
@@ -162,8 +184,9 @@ public class BlankFragment1 extends Fragment {
 
         /*点击获取时间选择器的方法*/
         btnPickDate = view.findViewById(R.id.btnPickDate);
+        btnPickDate.setText(datetime);
 
-        selectedDate = Calendar.getInstance();
+        btnPickDate.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
 
         // 设置按钮点击事件，弹出日期选择器
         btnPickDate.setOnClickListener(new View.OnClickListener() {
@@ -181,7 +204,8 @@ public class BlankFragment1 extends Fragment {
     /*默认加载下拉选择器的方法*/
     private void initSpinners() {
 
-        String datetime = CurrentTime();
+        /*获取当天日期*/
+        datetime = CurrentTime();
         tvSelectedDate.setText("日期:" + datetime);
 
 
@@ -252,6 +276,8 @@ public class BlankFragment1 extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+
     }
 
 
@@ -278,6 +304,7 @@ public class BlankFragment1 extends Fragment {
                         String formattedDate = sdf.format(selectedDate.getTime());
                         timeStr = formattedDate;
                         tvSelectedDate.setText("日期:" + timeStr);
+                        btnPickDate.setText(timeStr);
 
 
                     }
@@ -292,10 +319,12 @@ public class BlankFragment1 extends Fragment {
     private OkHttpClient.Builder getClient() {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
         httpClientBuilder.connectTimeout(15, TimeUnit.SECONDS);
+
+        // 添加 token 拦截器
         httpClientBuilder.addNetworkInterceptor(new TokenHeaderInterceptor(getContext()));
+
         return httpClientBuilder;
     }
-
 
     /*后端获取数据的方法*/
     public void GetData() {
@@ -315,11 +344,17 @@ public class BlankFragment1 extends Fragment {
 
         classrooms = new Classrooms();
         classrooms.setBuilding(buildingStr);
+
         classrooms.setFloor(floorStr);
+
         classrooms.setPeriod(periodStr);
+
         classrooms.setTime(timeStr);
 
-        retrofitApi.queryclassroom(classrooms)
+        Log.d("classrooms", buildingStr + "   " + floorStr + "     " + periodStr + "    " + timeStr);
+
+
+        retrofitApi.queryclassroom(classrooms, settoken)
                 .observeOn(Schedulers.io())
                 .timeout(10, TimeUnit.SECONDS) // 设置超时时间为10秒
                 .observeOn(AndroidSchedulers.mainThread())
@@ -344,10 +379,9 @@ public class BlankFragment1 extends Fragment {
                             // 获取第一条数据
                             Classrooms firstClassroom = data.get(0);
 
-                            // 打印或处理第一条数据
-                            Log.d("ClassroomInfo", "Classroom ID: " + firstClassroom.getClassroomId());
-                            Log.d("ClassroomInfo", "Building Name: " + firstClassroom.getBuildingName());
 
+                            SPUtils.put(getContext(), "buildingStr", buildingStr);
+                            SPUtils.put(getContext(), "floorStr", floorStr);
                             /*保存要用预约的时间*/
                             SPUtils.put(getContext(), "timeStr", timeStr);
                             /*保存要预约的节数*/

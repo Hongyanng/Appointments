@@ -161,7 +161,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_login"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="30dp"
             android:src="@drawable/memory_selector"
             android:layout_marginLeft="4dp" />
 
@@ -174,7 +174,7 @@
             android:layout_marginTop="30dp"
             android:text="记住此密码"
             android:textColor="#ccc"
-            android:textSize="18sp" />
+            android:textSize="15sp" />
         <!--记住密码结束-->
         <!--去注册开始-->
         <TextView
@@ -185,7 +185,7 @@
             android:layout_marginEnd="10dp"
             android:text="@string/register"
             android:textColor="#ccc"
-            android:textSize="18sp"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_login" />
         <!--去注册结束-->

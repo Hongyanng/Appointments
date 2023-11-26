@@ -1,15 +1,18 @@
 package com.xinke.edu.Appointment.net;
 
 import com.xinke.edu.Appointment.entity.Classrooms;
+import com.xinke.edu.Appointment.entity.MyReservation;
 import com.xinke.edu.Appointment.entity.Reservetion;
 import com.xinke.edu.Appointment.entity.Result;
 import com.xinke.edu.Appointment.entity.User;
 
 import java.util.List;
 
+import butterknife.BindView;
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -25,7 +28,7 @@ public interface RetrofitApi {
     Observable<Result<User>> login(@Body User user);
 
     /**
-     * 注册接口
+     * 用户注册接口
      */
     @POST("user/register")
     @Headers({"Content-Type:application/json", "Accept:application/json"})
@@ -33,11 +36,11 @@ public interface RetrofitApi {
 
 
     /**
-     * 查询教室的接口
+     * 查询空闲教室的接口
      */
     @POST("user/searchAvailableClassrooms")
     @Headers({"Content-Type:application/json", "Accept:application/json"})
-    Observable<Result<List<Classrooms>>> queryclassroom(@Body Classrooms classrooms);
+    Observable<Result<List<Classrooms>>> queryclassroom(@Body Classrooms classrooms,@Header("token") String token);
 
     /**
      * 预约教室的接口
@@ -45,6 +48,14 @@ public interface RetrofitApi {
     @POST("user/reservation")
     @Headers({"Content-Type:application/json", "Accept:application/json"})
     Observable<Result> reservation(@Body Reservetion reservation);
+
+
+    /**
+     * 学生查询预约记录接口
+     */
+    @POST("user/myReservation")
+    @Headers({"Content-Type:application/json", "Accept:application/json"})
+    Observable<Result<List<MyReservation>>> myReservation(@Header("token") String token);
 
 
 }

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -70,6 +71,15 @@ public class RegisterActivity extends AppCompatActivity {
     @BindView(R.id.phone_number)
     EditText phoneStr;
 
+    /*获取输入的辅导员姓名*/
+    @BindView(R.id.instructor)
+    EditText instructorStr;
+
+
+    /*获取单选框*/
+    @BindView(R.id.radio_group)
+    RadioGroup radioGroup;
+
 
     /*获取身份*/
     //教师1
@@ -109,6 +119,9 @@ public class RegisterActivity extends AppCompatActivity {
     //手机号码
     String phone;
 
+    //辅导员姓名
+    String instructor;
+
     // 创建正则表达式用于验证电子邮件格式
     private static final Pattern EMAIL_PATTERN = Patterns.EMAIL_ADDRESS;
 
@@ -124,6 +137,32 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this); // 绑定视图
 
+
+
+        /*隐藏对应的视图*/
+        // 设置RadioGroup的监听器
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // 根据选择的身份来隐藏或显示相应的组件
+                switch (checkedId) {
+                    case R.id.rb_teacher:
+                        // 如果选择了教师身份，隐藏手机号码和性别相关组件
+                        hideComponentsForTeacher();
+                        break;
+
+                    case R.id.rb_student:
+                        // 如果选择了学生身份，显示所有组件
+                        showAllComponents();
+                        break;
+
+                    case R.id.rb_instructor:
+                        // 如果选择了辅导员身份，隐藏性别相关组件
+                        hideComponentsForInstructor();
+                        break;
+                }
+            }
+        });
 
 
         //邮箱地址监听事件
@@ -177,6 +216,8 @@ public class RegisterActivity extends AppCompatActivity {
         finish();
     }
 
+
+    /*注册事件*/
     @OnClick(R.id.btn_register)
     public void register() {
         if (!validateInputs()) {
@@ -187,6 +228,7 @@ public class RegisterActivity extends AppCompatActivity {
         password = passwordStr.getText().toString();
         email = emailStr.getText().toString();
         phone = phoneStr.getText().toString();
+        instructor = instructorStr.getText().toString();
 
         //发送请求
         Retrofit retrofit = new Retrofit.Builder()
@@ -205,6 +247,8 @@ public class RegisterActivity extends AppCompatActivity {
         user.setPhoneNumber(phone);
         user.setAuthenticationStatus(authenticationStatus);
         user.setGender(gender);
+        user.setInstructor(instructor);
+        Log.d("data",fullname+"  "+username+"  "+password+"  "+email+"  "+phone+"  "+authenticationStatus+"  "+gender+"  "+instructor);
 
 
         retrofitApi.register(user)
@@ -354,5 +398,25 @@ public class RegisterActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+
+    //教师身份
+    private void hideComponentsForTeacher() {
+        /*隐藏显示输入辅导员名字组件*/
+        findViewById(R.id.fdy_layout).setVisibility(View.GONE);
+        findViewById(R.id.fdytxt).setVisibility(View.GONE);
+    }
+
+    //辅导员身份
+    private void hideComponentsForInstructor() {
+        findViewById(R.id.fdy_layout).setVisibility(View.GONE);
+        findViewById(R.id.fdytxt).setVisibility(View.GONE);
+    }
+
+    //学生身份
+    private void showAllComponents() {
+        findViewById(R.id.fdy_layout).setVisibility(View.VISIBLE);
+    }
+
 
 }

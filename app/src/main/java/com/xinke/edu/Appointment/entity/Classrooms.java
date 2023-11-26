@@ -7,7 +7,6 @@ package com.xinke.edu.Appointment.entity;
 public class Classrooms {
 
     //{"id":1,"classroomId":"C101","classroomType":"亿纬产业学院","capacity":null,"seatingArrangement":"","building":"C","buildingName":"明志楼","floor":1}
-    int id;
     String classroomId;
     String classroomType;
     String capacity;
@@ -17,6 +16,14 @@ public class Classrooms {
     int floor;
     String time;
 
+    public int getFloor() {
+        return floor;
+    }
+
+    public void setFloor(int floor) {
+        this.floor = floor;
+    }
+
     public String getTime() {
         return time;
     }
@@ -25,9 +32,7 @@ public class Classrooms {
         this.time = time;
     }
 
-    public int getFloor() {
-        return floor;
-    }
+
 
     public String getPeriod() {
         return period;
@@ -39,17 +44,6 @@ public class Classrooms {
 
     String period;
 
-    public void setFloor(int floor) {
-        this.floor = floor;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getClassroomId() {
         return classroomId;

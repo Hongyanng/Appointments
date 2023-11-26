@@ -3,6 +3,7 @@ package com.xinke.edu.Appointment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -78,6 +79,8 @@ public class Student_Menu_Activity extends AppCompatActivity {
 //        tabLayoutMediator.attach();
 
 
+
+
         /*侧滑栏菜单的点击事件*/
         navigationView = findViewById(R.id.NavigationView);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -146,6 +149,7 @@ public class Student_Menu_Activity extends AppCompatActivity {
         //修改用户的姓名
         TextView userName = headerView.findViewById(R.id.userName);
         userName.setText("欢迎您:" + savedfullName);
+        Log.d("userName",""+savedfullName);
 
 
     }

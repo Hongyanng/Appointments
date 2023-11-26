@@ -43,11 +43,7 @@
 
 
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="#ccc"
-            app:layout_constraintTop_toTopOf="@id/tabLayout"/>
+
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"

@@ -42,6 +42,9 @@
             </intent-filter>
         </activity>
 
+        <!--学生查看预约页面-->
+        <activity android:name=".MyreservationActivity"></activity>
+
 
     </application>
 

@@ -55,6 +55,7 @@
     <color name="bg">#2B2B2B</color>
     <color name="btn_item_stroke_color">#E0E0E0</color>
     <color name="hint_color">#666</color>
+    <color name="background_color">#F5F5F5</color>
     
 
     <!--首页的颜色-->

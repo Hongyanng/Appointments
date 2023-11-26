@@ -8,7 +8,14 @@ public class Reservetion {
     String period;//时间段
     String purpose;//预约教室的目的或活动的简短描述
     String time;//预约的具体时间
-    int userId;//用户id
+
+    public int getFloor() {
+        return floor;
+    }
+
+    public void setFloor(int floor) {
+        this.floor = floor;
+    }
 
     public String getBuilding() {
         return building;
@@ -26,13 +33,7 @@ public class Reservetion {
         this.classroomId = classroomId;
     }
 
-    public int getFloor() {
-        return floor;
-    }
 
-    public void setFloor(int floor) {
-        this.floor = floor;
-    }
 
     public int getNumberParticipants() {
         return numberParticipants;
@@ -66,11 +67,4 @@ public class Reservetion {
         this.time = time;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
 }

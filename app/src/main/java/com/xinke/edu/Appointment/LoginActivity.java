@@ -204,7 +204,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
                                     /*拿到用户的信息后用工具类存起来*/
-                                    int userId=result.getData().getUserId();
+                                    int userId = result.getData().getUserId();
 
                                     SPUtils.put(LoginActivity.this, "token", token);
                                     SPUtils.put(LoginActivity.this, "userName", userName);
@@ -224,14 +224,13 @@ public class LoginActivity extends AppCompatActivity {
 
                                         // 立即销毁当前的Activity
                                         finish();
+                                    } else {
+                                        /*不记住直接登录不做保存操作*/
+                                        Intent intent = new Intent(LoginActivity.this, Student_Menu_Activity.class);
+                                        startActivity(intent);
+                                        // 立即销毁当前的Activity
+                                        finish();
                                     }
-                                    /*不记住直接登录不做保存操作*/
-                                    Intent intent = new Intent(LoginActivity.this, Student_Menu_Activity.class);
-                                    startActivity(intent);
-                                    // 立即销毁当前的Activity
-                                    finish();
-
-
                                 } else {
                                     // 处理 data 为 null 的情况
                                     Toast.makeText(LoginActivity.this, "服务器返回的数据为空", Toast.LENGTH_SHORT).show();
@@ -246,7 +245,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (e instanceof TimeoutException) {
                                 // 请求超时
                                 progressDialog.dismiss();
-                                Toast.makeText(LoginActivity.this, "服务器请求超时", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "服务器请求超时,请检查网络连接！", Toast.LENGTH_SHORT).show();
                             } else {
                                 // 其他服务器错误
                                 Log.e("onError", e.toString());

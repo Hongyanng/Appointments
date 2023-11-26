@@ -1,7 +1,9 @@
 package com.xinke.edu.Appointment.Adapter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.PorterDuff;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -24,12 +26,15 @@ import com.xinke.edu.Appointment.entity.Reservetion;
 import com.xinke.edu.Appointment.entity.Result;
 import com.xinke.edu.Appointment.net.RetrofitApi;
 import com.xinke.edu.Appointment.token.SPUtils;
+import com.xinke.edu.Appointment.token.SharedPreferencesUtils;
 import com.xinke.edu.Appointment.token.TokenHeaderInterceptor;
 
 import butterknife.OnClick;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,6 +66,25 @@ public class ClassGouAdapter extends BaseQuickAdapter<Classrooms, BaseViewHolder
 
     /*预约的节数*/
     String periodStr;
+
+    /*预约的楼*/
+    String buildingStr;
+
+    /*预约的楼层*/
+    String floor;
+
+    /*tokne*/
+    String settoken;
+
+    /*加载动画*/
+    ProgressDialog progressDialog;
+
+
+    /*实体类*/
+    Reservetion reservetion;
+
+
+
 
     private Context context;
 
@@ -96,9 +120,12 @@ public class ClassGouAdapter extends BaseQuickAdapter<Classrooms, BaseViewHolder
 
 
         /*获取保存的数据*/
-        userId = (int) SPUtils.get(getContext(), "userId", 0);
+        buildingStr = (String) SPUtils.get(getContext(), "buildingStr", "");
+        floor = (String) SPUtils.get(getContext(), "floor", "");
         timeStr = (String) SPUtils.get(getContext(), "timeStr", "");
         periodStr = (String) SPUtils.get(getContext(), "periodStr", "");
+        /*获取token*/
+        settoken = (String) SharedPreferencesUtils.getParam(getContext(), "token", "");
 
 
         // 修改每个布局里面的文字
@@ -162,31 +189,29 @@ public class ClassGouAdapter extends BaseQuickAdapter<Classrooms, BaseViewHolder
                                     e.printStackTrace();
                                 }
                             } else {
-                                Toast.makeText(getContext(), "不能为空！", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "申请理由，不能为空！", Toast.LENGTH_SHORT).show();
                                 return;
                             }
 
-                            Log.d("peopleCount", purpose + "");
-                            Log.d("purposeText", peopleCount);
 
                             /*实例化对象*/
-                            Reservetion reservetion = new Reservetion();
-
+                            reservetion = new Reservetion();
                             reservetion.setClassroomId(clickedClassroom.getClassroomId());
                             reservetion.setNumberParticipants(purpose);
-                            Log.d("purpose", purpose + "");
                             reservetion.setPeriod(periodStr);
                             reservetion.setPurpose(peopleCount);
                             reservetion.setTime(timeStr);
-
-                            reservetion.setUserId(userId);
-                            Log.d("userId", userId + "");
                             reservetion.setBuilding(clickedClassroom.getBuilding());
                             reservetion.setFloor(clickedClassroom.getFloor());
 
                             /*调用方法给后端传值*/
                             GetClassroom(reservetion);
 
+                            /*预约成功后禁用按钮*/
+                            // 将按钮设置为不可用状态
+                            reserveButton.setEnabled(false);
+                            // 设置按钮背景颜色为灰色
+                            reserveButton.getBackground().setColorFilter(getContext().getResources().getColor(android.R.color.darker_gray), PorterDuff.Mode.SRC_ATOP);
 
                             // 如果需要，可以通过回调通知监听器
                             if (onReserveClickListener != null) {
@@ -251,23 +276,44 @@ public class ClassGouAdapter extends BaseQuickAdapter<Classrooms, BaseViewHolder
                 .subscribe(new Observer<Result>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
+                        // 显示加载动画
+                        progressDialog = ProgressDialog.show(getContext(), "请稍候", "正在请求远程服务器......", true, false);
 
                     }
 
                     @Override
                     public void onNext(@NonNull Result result) {
+                        if (result.getCode() == 201) {
+                            // 错误提示
+                            Toast.makeText(getContext(), result.getMsg(), Toast.LENGTH_SHORT).show();
+                            return;
+                        } else {
+                            Toast.makeText(getContext(), "预约成功，请耐心等待辅导员审核！", Toast.LENGTH_SHORT).show();
+
+                        }
 
 
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-
+                        // 发生错误时的操作
+                        if (e instanceof TimeoutException) {
+                            // 请求超时
+                            progressDialog.dismiss();
+                            Toast.makeText(getContext(), "服务器请求超时", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // 其他服务器错误
+                            Log.e("onError", e.toString());
+                            progressDialog.dismiss();
+                            Toast.makeText(getContext(), "服务器错误", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
                     public void onComplete() {
-
+                        // 完成时的操作
+                        progressDialog.dismiss();
                     }
                 });
 
@@ -282,6 +328,7 @@ public class ClassGouAdapter extends BaseQuickAdapter<Classrooms, BaseViewHolder
         httpClientBuilder.addNetworkInterceptor(new TokenHeaderInterceptor(getContext()));
         return httpClientBuilder;
     }
+
 
 }
 
