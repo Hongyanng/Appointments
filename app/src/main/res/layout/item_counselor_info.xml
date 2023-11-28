@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!--申请人姓名-->
+            <LinearLayout
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="申请人:"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/fullName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="张三"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!--门牌号-->
+            <LinearLayout
+                android:id="@+id/mph"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/name"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="教室门牌号:"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/classroomId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="C306"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+
+
+            <!--提交申请时间-->
+            <LinearLayout
+                android:id="@+id/yyrs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mph"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="提交申请时间:"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/creationTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="2023年11月23日 08:00:00"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- 预约日期 -->
+            <LinearLayout
+                android:id="@+id/yyrq"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/yyrs"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="预约日期:"
+                    android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="2023年11月23日"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!--时间段-->
+            <LinearLayout
+                android:id="@+id/sjd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/yyrq"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="预约时间段:"
+                    android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/period"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="第1、2节"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- 参与活动人数 -->
+            <LinearLayout
+                android:id="@+id/hdrs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sjd"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="参与活动人数:"
+                    android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/numberParticipants"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="128人"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+
+
+            <!-- 申请理由 -->
+            <LinearLayout
+                android:id="@+id/sqly"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/hdrs"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="申请理由:"
+                    android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/purpose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="开主题班会"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- 审核状态 -->
+            <LinearLayout
+                android:id="@+id/shzt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sqly"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="审核状态:"
+                    android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="0待审核，1已通过，2已取消"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- 通过申请按钮 -->
+            <Button
+                android:id="@+id/YesButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/button_bg"
+                android:text="通过申请"
+                android:textColor="#FFFFFF" />
+
+
+            <!-- 通过申请按钮 -->
+            <Button
+                android:id="@+id/NoButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/button_bg"
+                android:text="驳回申请"
+                android:textColor="#FFFFFF" />
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

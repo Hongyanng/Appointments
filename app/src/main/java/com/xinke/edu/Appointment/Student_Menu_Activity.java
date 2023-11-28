@@ -4,14 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.GridLayout;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,24 +16,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 import com.xinke.edu.Appointment.fragment.OrdersPagerAdapter;
 import com.xinke.edu.Appointment.token.SPUtils;
-import com.xinke.edu.Appointment.token.SharedPreferencesUtils;
 
 
 public class Student_Menu_Activity extends AppCompatActivity {
 
 
     /*初始化下拉框*/
-
-
     NavController navController;
 
     View headerView;
@@ -56,29 +43,6 @@ public class Student_Menu_Activity extends AppCompatActivity {
         /*底部的布局切换*/
         ViewPager2 viewPager2 = findViewById(R.id.viewPager);
         viewPager2.setAdapter(new OrdersPagerAdapter(this));
-//        TabLayout tabLayout = findViewById(R.id.tabLayout);
-//        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
-//            @Override
-//            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-//
-//                switch (position) {
-//                    case 0: {
-//                        tab.setText("首页");
-//                        tab.setIcon(R.drawable.ic_home);
-//
-//                        break;
-//                    }
-//                    case 1: {
-//                        tab.setText("不是首页");
-//                        tab.setIcon(R.drawable.ic_assignment);
-//                        break;
-//                    }
-//                }
-//            }
-//        });
-//        tabLayoutMediator.attach();
-
-
 
 
         /*侧滑栏菜单的点击事件*/
@@ -98,10 +62,12 @@ public class Student_Menu_Activity extends AppCompatActivity {
 
                         break;
                     case R.id.menu_notification:
-
+                        Intent intent = new Intent(Student_Menu_Activity.this, ExamineActivity.class);
+                        startActivity(intent);
                         break;
                     case R.id.menu_orders:
-
+                        Intent intent1 = new Intent(Student_Menu_Activity.this, MyreservationActivity.class);
+                        startActivity(intent1);
                         break;
                     case R.id.menu_setting:
 
@@ -117,12 +83,6 @@ public class Student_Menu_Activity extends AppCompatActivity {
             }
 
         });
-
-
-
-
-
-
 
 
         /*获取布局*/

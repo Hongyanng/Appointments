@@ -1,6 +1,7 @@
 package com.xinke.edu.Appointment.net;
 
 import com.xinke.edu.Appointment.entity.Classrooms;
+import com.xinke.edu.Appointment.entity.Counselor;
 import com.xinke.edu.Appointment.entity.MyReservation;
 import com.xinke.edu.Appointment.entity.Reservetion;
 import com.xinke.edu.Appointment.entity.Result;
@@ -57,5 +58,12 @@ public interface RetrofitApi {
     @Headers({"Content-Type:application/json", "Accept:application/json"})
     Observable<Result<List<MyReservation>>> myReservation(@Header("token") String token);
 
+
+    /**
+     * 辅导员查询学生预约接口
+     */
+    @POST("user/searchReservation")
+    @Headers({"Content-Type:application/json", "Accept:application/json"})
+    Observable<Result<List<Counselor>>> getCounselor(@Header("token") String token);
 
 }

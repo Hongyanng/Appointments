@@ -4,7 +4,6 @@ package com.xinke.edu.Appointment;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 
@@ -26,7 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.xinke.edu.Appointment.Adapter.ClassGouAdapter;
+import com.xinke.edu.Appointment.Adapter.ClassRoomAdapter;
 import com.xinke.edu.Appointment.entity.Classrooms;
 import com.xinke.edu.Appointment.entity.Result;
 import com.xinke.edu.Appointment.net.RetrofitApi;
@@ -42,7 +41,6 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import butterknife.ButterKnife;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
@@ -50,7 +48,6 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -71,7 +68,7 @@ public class BlankFragment1 extends Fragment {
     /*初始化视图*/
     RecyclerView recyclerView;
 
-    ClassGouAdapter classGouAdapter;
+    ClassRoomAdapter classGouAdapter;
 
 
     /*时间选择器*/
@@ -126,7 +123,6 @@ public class BlankFragment1 extends Fragment {
         /*获取token*/
         settoken = (String) SharedPreferencesUtils.getParam(getContext(), "token", "");
 
-
         //获取三个下拉框的id
         spinnerBuilding = view.findViewById(R.id.spinnerBuilding);
         spinnerFloor = view.findViewById(R.id.spinnerFloor);
@@ -146,7 +142,7 @@ public class BlankFragment1 extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
 
         /*帮助类实例化*/
-        classGouAdapter = new ClassGouAdapter(new ArrayList<>());
+        classGouAdapter = new ClassRoomAdapter(new ArrayList<>());
         classGouAdapter.setContext(getContext());
 
         /*把实例化的帮助类类传入布局*/

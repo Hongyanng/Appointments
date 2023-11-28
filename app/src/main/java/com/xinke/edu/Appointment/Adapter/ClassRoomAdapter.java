@@ -49,7 +49,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ClassGouAdapter extends BaseQuickAdapter<Classrooms, BaseViewHolder> {
+public class ClassRoomAdapter extends BaseQuickAdapter<Classrooms, BaseViewHolder> {
 
 
     /*预约的人数*/
@@ -109,7 +109,7 @@ public class ClassGouAdapter extends BaseQuickAdapter<Classrooms, BaseViewHolder
     }
 
 
-    public ClassGouAdapter(@Nullable List<Classrooms> data) {
+    public ClassRoomAdapter(@Nullable List<Classrooms> data) {
         super(R.layout.itme_vido, data);
 
     }
