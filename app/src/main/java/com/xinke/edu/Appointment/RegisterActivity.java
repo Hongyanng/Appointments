@@ -147,17 +147,14 @@ public class RegisterActivity extends AppCompatActivity {
                 // 根据选择的身份来隐藏或显示相应的组件
                 switch (checkedId) {
                     case R.id.rb_teacher:
-                        // 如果选择了教师身份，隐藏手机号码和性别相关组件
                         hideComponentsForTeacher();
                         break;
 
                     case R.id.rb_student:
-                        // 如果选择了学生身份，显示所有组件
                         showAllComponents();
                         break;
 
                     case R.id.rb_instructor:
-                        // 如果选择了辅导员身份，隐藏性别相关组件
                         hideComponentsForInstructor();
                         break;
                 }
@@ -402,7 +399,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     //教师身份
     private void hideComponentsForTeacher() {
-        /*隐藏显示输入辅导员名字组件*/
         findViewById(R.id.fdy_layout).setVisibility(View.GONE);
         findViewById(R.id.fdytxt).setVisibility(View.GONE);
     }
@@ -415,6 +411,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     //学生身份
     private void showAllComponents() {
+        findViewById(R.id.fdytxt).setVisibility(View.VISIBLE);
         findViewById(R.id.fdy_layout).setVisibility(View.VISIBLE);
     }
 

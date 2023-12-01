@@ -8,9 +8,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -71,6 +73,9 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.rb_student)
     RadioButton MyRadioStudent;
 
+    /*获取单选框*/
+    @BindView(R.id.radio_group)
+    RadioGroup radioGroup;
 
     //初始化老师学生身份
     int authenticationStatus;
@@ -120,8 +125,17 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
+
     }
 
+    private void unshowCounselor() {
+        findViewById(R.id.menu_notification).setVisibility(View.GONE);
+    }
+
+
+    private void showCounselor() {
+        findViewById(R.id.menu_notification).setVisibility(View.VISIBLE);
+    }
 
     /**
      * 登录按钮的逻辑
@@ -185,6 +199,24 @@ public class LoginActivity extends AppCompatActivity {
 
                         @Override
                         public void onNext(@NonNull Result<User> result) {
+                            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                                @Override
+                                public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                                    // 根据选择的身份来隐藏或显示相应的组件
+                                    switch (checkedId) {
+                                        case R.id.rb_student:
+                                            // 如果选择了学生身份，隐藏我的审核
+                                            unshowCounselor();
+                                            break;
+
+                                        case R.id.rb_teacher:
+                                            // 如果选择了教师身份，显示我的审核
+                                            showCounselor();
+                                            break;
+
+                                    }
+                                }
+                            });
                             /*是否成功请求*/
                             if (result.getCode() == Result.FAIL) {
                                 // 错误提示
@@ -274,11 +306,6 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
-    /**
-     * token
-     */
-    // 保存token到SharedPreferences的方法
 
 
 }

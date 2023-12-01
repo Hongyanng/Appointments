@@ -42,25 +42,35 @@
         </LinearLayout>
 
 
-
+        <!--        <com.google.android.material.tabs.TabLayout-->
+<!--            android:id="@+id/tabLayout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:tabIndicatorHeight="3dp"-->
+<!--            app:tabMode="fixed"-->
+<!--            app:tabPaddingBottom="8dp"-->
+<!--            app:tabPaddingTop="15dp"/>-->
 
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/LayoutToolBar"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:tabIndicatorHeight="3dp"
-            app:tabMode="fixed"
-            app:tabPaddingBottom="8dp"
-            app:tabPaddingTop="15dp"/>
+            app:layout_constraintTop_toBottomOf="@id/LayoutToolBar"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_editor_absoluteX="0dp" />
+
+<!--        <com.roughike.bottombar.BottomBar-->
+<!--            android:id="@+id/bottomBar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="60dp"-->
+<!--            app:bb_activeTabColor="@android:color/white"-->
+<!--            app:bb_inActiveTabColor="@android:color/white"-->
+<!--            app:bb_inActiveTabAlpha="0.3"-->
+<!--            app:bb_tabXmlResource="@xml/bottombar_tabs"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent" />-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

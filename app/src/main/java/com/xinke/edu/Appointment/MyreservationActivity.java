@@ -15,7 +15,7 @@ import com.xinke.edu.Appointment.Adapter.MyreservationAdapter;
 import com.xinke.edu.Appointment.entity.MyReservation;
 import com.xinke.edu.Appointment.entity.Result;
 import com.xinke.edu.Appointment.net.RetrofitApi;
-import com.xinke.edu.Appointment.token.SharedPreferencesUtils;
+import com.xinke.edu.Appointment.token.SPUtils;
 import com.xinke.edu.Appointment.token.TokenHeaderInterceptor;
 
 import java.util.ArrayList;
@@ -57,12 +57,12 @@ public class MyreservationActivity extends AppCompatActivity {
         ButterKnife.bind(this); // 绑定视图
 
         /*获取token*/
-        settoken = (String) SharedPreferencesUtils.getParam(this, "token", "");
+        settoken = (String) SPUtils.get(this, "token", "");
 
         /*初始化视图*/
         /*把布局划分成左右两边的代码，后面的2就是分成几份*/
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
-        adapter=new MyreservationAdapter(new ArrayList<>());
+        adapter = new MyreservationAdapter(new ArrayList<>(), MyreservationActivity.this);
 
         /*把实例化的帮助类类传入布局*/
         recyclerView.setAdapter(adapter);

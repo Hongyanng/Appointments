@@ -29,6 +29,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.roughike.bottombar.BottomBar;
 import com.xinke.edu.Appointment.fragment.OrdersPagerAdapter;
 import com.xinke.edu.Appointment.token.SPUtils;
 import com.xinke.edu.Appointment.token.SharedPreferencesUtils;
@@ -44,6 +45,8 @@ public class Student_Menu_Activity extends AppCompatActivity {
 
     View headerView;
     NavigationView navigationView;
+
+    BottomBar bottomBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -139,6 +142,7 @@ public class Student_Menu_Activity extends AppCompatActivity {
 
         /*设置彩色图标*/
         navigationView.setItemIconTintList(null);
+
 
         // 获取 Header View 布局文件
         headerView = navigationView.getHeaderView(0);

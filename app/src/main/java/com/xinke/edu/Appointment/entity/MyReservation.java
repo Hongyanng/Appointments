@@ -6,6 +6,22 @@ package com.xinke.edu.Appointment.entity;
  */
 
 public class MyReservation {
+
+
+
+//    cancelReason	取消原因	string
+//    classroomId	关联到特定教室的标识符。这个字段应该与教室信息表相关联	string
+//    creationTime	记录预约创建的时间	string(date-time)
+//    fullName	用户的真实姓名	string
+//    numberParticipants	预计参与预约活动的人数	integer(int32)
+//    period	时间段	string
+//    purpose	预约教室的目的或活动的简短描述	string
+//    reservationId	主键	integer(int32)
+//    status	表示预约状态的字段（0待审核，1已通过，2已取消）	integer(int32)
+//    time	预约的具体时间	string(date)
+//    updateTime	最后一次修改预约信息的时间	string(date-time)
+//    userId	预约教室的用户的唯一标识符。这个字段应该与用户信息表相关联	integer(int32)
+
     private int reservationId;
     private String classroomId;
     private int userId;

@@ -1,5 +1,7 @@
 package com.xinke.edu.Appointment.Adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -10,10 +12,14 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.xinke.edu.Appointment.LoginActivity;
 import com.xinke.edu.Appointment.R;
+import com.xinke.edu.Appointment.ReservationActivity;
+import com.xinke.edu.Appointment.Student_Menu_Activity;
 import com.xinke.edu.Appointment.entity.Classrooms;
 import com.xinke.edu.Appointment.entity.MyReservation;
 
@@ -26,10 +32,26 @@ public class MyreservationAdapter extends BaseQuickAdapter<MyReservation, BaseVi
     /*获取布局的id*/
     RelativeLayout MakeLayout;
 
-    public MyreservationAdapter(@Nullable List<MyReservation> data) {
+    private Context context;
+
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public MyreservationAdapter(@Nullable List<MyReservation> data, Context context) {
         super(R.layout.itme_myreservation, data);
+
+        this.context = context;
+
         // 初始化时对数据进行排序
         sortDataByCreationTime();
+
+
     }
 
     private void sortDataByCreationTime() {
@@ -46,10 +68,13 @@ public class MyreservationAdapter extends BaseQuickAdapter<MyReservation, BaseVi
     @Override
     protected void convert(BaseViewHolder helper, MyReservation item) {
 
+
         /*申请的原因*/
-        helper.setText(R.id.purpose, item.getPurpose() + " 的教室申请");
+        helper.setText(R.id.purpose, item.getPurpose() + "的教室申请");
+
+        Log.d("getPurpose", item.getPurpose());
         /*申请教室的时间*/
-        helper.setText(R.id.time, item.getTime());
+        helper.setText(R.id.time, item.getTime() + " " + "第" + item.getPeriod() + "节");
         /*首次申请教室的时间*/
         helper.setText(R.id.creationTime, item.getCreationTime());
 
@@ -79,7 +104,35 @@ public class MyreservationAdapter extends BaseQuickAdapter<MyReservation, BaseVi
                 if (position != RecyclerView.NO_POSITION) {
                     // 获取点击位置的数据
                     MyReservation clickedMyReservation = getItem(position);
-                    Log.d("clickedMyReservation",clickedMyReservation.getClassroomId());
+
+                    // 创建一个新的Intent
+                    Intent intent = new Intent(context, ReservationActivity.class);
+
+                    // 通过Intent传递预约信息
+                    //教室
+                    intent.putExtra("classroomId", clickedMyReservation.getClassroomId());
+                    //预约教室的目的或活动的简短描述
+                    intent.putExtra("purpose", clickedMyReservation.getPurpose());
+                    //记录预约创建的时间
+                    intent.putExtra("creationTime", clickedMyReservation.getCreationTime());
+                    //用户的真实姓名
+                    intent.putExtra("fullName", clickedMyReservation.getFullName());
+                    //预计参与预约活动的人数
+                    intent.putExtra("numberParticipants", clickedMyReservation.getNumberParticipants());
+                    //时间段
+                    intent.putExtra("period", clickedMyReservation.getPeriod());
+                    //预约的状态
+                    intent.putExtra("status", clickedMyReservation.getStatus());
+                    //预约的具体时间
+                    intent.putExtra("time", clickedMyReservation.getTime());
+                    //用户的id
+                    intent.putExtra("reservationId", clickedMyReservation.getReservationId());
+
+                    Log.d("reservationId",clickedMyReservation.getReservationId()+"");
+
+                    // 启动ReservationActivity
+                    context.startActivity(intent);
+
                 }
             }
         });

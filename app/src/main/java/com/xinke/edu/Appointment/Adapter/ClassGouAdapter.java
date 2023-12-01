@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.PorterDuff;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -26,7 +27,6 @@ import com.xinke.edu.Appointment.entity.Reservetion;
 import com.xinke.edu.Appointment.entity.Result;
 import com.xinke.edu.Appointment.net.RetrofitApi;
 import com.xinke.edu.Appointment.token.SPUtils;
-import com.xinke.edu.Appointment.token.SharedPreferencesUtils;
 import com.xinke.edu.Appointment.token.TokenHeaderInterceptor;
 
 import butterknife.OnClick;
@@ -125,7 +125,7 @@ public class ClassGouAdapter extends BaseQuickAdapter<Classrooms, BaseViewHolder
         timeStr = (String) SPUtils.get(getContext(), "timeStr", "");
         periodStr = (String) SPUtils.get(getContext(), "periodStr", "");
         /*获取token*/
-        settoken = (String) SharedPreferencesUtils.getParam(getContext(), "token", "");
+        settoken = (String) SPUtils.get(getContext(), "token", "");
 
 
         // 修改每个布局里面的文字
@@ -165,6 +165,7 @@ public class ClassGouAdapter extends BaseQuickAdapter<Classrooms, BaseViewHolder
                     // 添加EditText组件到对话框
                     final EditText etPeopleCount = new EditText(getContext());
                     etPeopleCount.setHint("预计参与人数");
+                    etPeopleCount.setInputType(InputType.TYPE_CLASS_NUMBER); // 设置只能输入数字
                     layout.addView(etPeopleCount);
 
                     //预约的目的

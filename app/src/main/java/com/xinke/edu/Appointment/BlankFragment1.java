@@ -31,7 +31,6 @@ import com.xinke.edu.Appointment.entity.Classrooms;
 import com.xinke.edu.Appointment.entity.Result;
 import com.xinke.edu.Appointment.net.RetrofitApi;
 import com.xinke.edu.Appointment.token.SPUtils;
-import com.xinke.edu.Appointment.token.SharedPreferencesUtils;
 import com.xinke.edu.Appointment.token.TokenHeaderInterceptor;
 
 import java.text.SimpleDateFormat;
@@ -124,7 +123,7 @@ public class BlankFragment1 extends Fragment {
 
 
         /*获取token*/
-        settoken = (String) SharedPreferencesUtils.getParam(getContext(), "token", "");
+        settoken = (String) SPUtils.get(getContext(), "token", "");
 
 
         //获取三个下拉框的id
@@ -351,7 +350,6 @@ public class BlankFragment1 extends Fragment {
 
         classrooms.setTime(timeStr);
 
-        Log.d("classrooms", buildingStr + "   " + floorStr + "     " + periodStr + "    " + timeStr);
 
 
         retrofitApi.queryclassroom(classrooms, settoken)
