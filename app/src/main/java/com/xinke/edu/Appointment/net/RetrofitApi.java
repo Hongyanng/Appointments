@@ -1,6 +1,7 @@
 package com.xinke.edu.Appointment.net;
 
 import com.xinke.edu.Appointment.entity.Classrooms;
+import com.xinke.edu.Appointment.entity.Counselor;
 import com.xinke.edu.Appointment.entity.MyReservation;
 import com.xinke.edu.Appointment.entity.Reservetion;
 import com.xinke.edu.Appointment.entity.Result;
@@ -15,8 +16,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface RetrofitApi {
@@ -42,7 +41,7 @@ public interface RetrofitApi {
      */
     @POST("user/searchAvailableClassrooms")
     @Headers({"Content-Type:application/json", "Accept:application/json"})
-    Observable<Result<List<Classrooms>>> queryclassroom(@Body Classrooms classrooms, @Header("token") String token);
+    Observable<Result<List<Classrooms>>> queryclassroom(@Body Classrooms classrooms,@Header("token") String token);
 
     /**
      * 预约教室的接口
@@ -61,10 +60,10 @@ public interface RetrofitApi {
 
 
     /**
-     * 用户取消预约教室的接口
+     * 辅导员查询学生预约接口
      */
-    @PUT("user/{reservationId}")
+    @POST("user/searchReservation")
     @Headers({"Content-Type:application/json", "Accept:application/json"})
-    Observable<Result> NoReservation(@Path("reservationId") int reservationId, @Header("token") String token);
+    Observable<Result<List<Counselor>>> getCounselor(@Header("token") String token);
 
 }

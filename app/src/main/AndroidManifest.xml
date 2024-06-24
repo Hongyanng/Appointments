@@ -44,8 +44,8 @@
 
         <!--学生查看预约页面-->
         <activity android:name=".MyreservationActivity"></activity>
-        <!--学生查看预约详情页面-->
-        <activity android:name=".ReservationActivity"></activity>
+
+        <activity android:name=".ExamineActivity"></activity>
 
     </application>
 

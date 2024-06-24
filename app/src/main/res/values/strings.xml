@@ -11,8 +11,8 @@
     <string name="instructor">辅导员</string>
     <string name="profile">我的信息</string>
     <string name="collection">我的收藏</string>
-    <string name="inbox">我的资讯</string>
-    <string name="notification">即时通知</string>
+    <string name="inbox">我的消息</string>
+    <string name="notification">我的审核</string>
     <string name="orders">我的预约</string>
     <string name="setting">设置</string>
     <string name="support">联系我们</string>
