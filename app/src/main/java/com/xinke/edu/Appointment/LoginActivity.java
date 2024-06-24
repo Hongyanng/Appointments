@@ -2,22 +2,23 @@ package com.xinke.edu.Appointment;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.release.alert.Alert;
+import com.xinke.edu.Appointment.LoaringDialog.LoadingDialog;
+import com.xinke.edu.Appointment.activity.RetrievePasswordActivity;
 import com.xinke.edu.Appointment.entity.Result;
 import com.xinke.edu.Appointment.entity.User;
 import com.xinke.edu.Appointment.net.RetrofitApi;
@@ -25,8 +26,6 @@ import com.xinke.edu.Appointment.token.AuthTokenInterceptor;
 import com.xinke.edu.Appointment.token.SPUtils;
 import com.xinke.edu.Appointment.token.SharedPreferencesUtils;
 
-import java.io.IOException;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -51,6 +50,9 @@ public class LoginActivity extends AppCompatActivity {
     /*注解绑定*/
 
 
+    // 定义一个变量，来标识是否退出
+    private Boolean isExit = false;
+
     /*获取输入的用户名id*/
     @BindView(R.id.et_username)
     EditText usernameStr;
@@ -59,9 +61,6 @@ public class LoginActivity extends AppCompatActivity {
     /*获取输入的密码paws*/
     @BindView(R.id.et_pwd)
     EditText passwordStr;
-
-    /*显示加载动画*/
-    ProgressDialog progressDialog;
 
 
     /*获取身份*/
@@ -73,6 +72,10 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.rb_student)
     RadioButton MyRadioStudent;
 
+    //辅导员3
+    @BindView(R.id.rb_Counseling)
+    RadioButton MyRadioCounseling;
+
     /*获取单选框*/
     @BindView(R.id.radio_group)
     RadioGroup radioGroup;
@@ -80,9 +83,6 @@ public class LoginActivity extends AppCompatActivity {
     //初始化老师学生身份
     int authenticationStatus;
 
-
-    // 在SharedPreferences中为token声明一个常量键
-    private static final String PREF_KEY_TOKEN = "token";
 
 
     User user;
@@ -125,17 +125,45 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
-
-    }
-
-    private void unshowCounselor() {
-        findViewById(R.id.menu_notification).setVisibility(View.GONE);
     }
 
 
-    private void showCounselor() {
-        findViewById(R.id.menu_notification).setVisibility(View.VISIBLE);
+    /**
+     * 退出软件并且在后台运行
+     */
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exit();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
     }
+
+    public void exit() {
+        if (!isExit) {
+            isExit = true;
+            Toast.makeText(getApplicationContext(), "再按一次返回键退出程序", Toast.LENGTH_SHORT).show();
+            //利用handler延迟发送更改状态信息，3000==3
+            mHandler.sendEmptyMessageDelayed(0, 3000);
+        } else {
+            //在后台运行程序，不退出程序，只返回桌面 wang 9/28
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            startActivity(intent);
+        }
+    }
+
+    Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            isExit = false;
+        }
+
+    };
+
 
     /**
      * 登录按钮的逻辑
@@ -148,8 +176,19 @@ public class LoginActivity extends AppCompatActivity {
             authenticationStatus = 1;
         } else if (MyRadioStudent.isChecked()) {
             authenticationStatus = 2;
+        } else if (MyRadioCounseling.isChecked()) {
+            authenticationStatus = 3;
         } else {
-            Toast.makeText(LoginActivity.this, "请先选中用户身份", Toast.LENGTH_SHORT).show();
+            new Alert(LoginActivity.this)
+                    .builder()
+                    .setMsg("请先选中用户身份！")
+                    .setPositiveButton(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    })
+                    .show();
             return;
         }
 
@@ -159,7 +198,16 @@ public class LoginActivity extends AppCompatActivity {
 
         if (username.isEmpty() || password.isEmpty()) {
             // 输入的账号或密码为空，显示错误消息或采取其他措施
-            Toast.makeText(this, "账号和密码不能为空", Toast.LENGTH_SHORT).show();
+            new Alert(LoginActivity.this)
+                    .builder()
+                    .setMsg("账号或密码不能为空,请重试！")
+                    .setPositiveButton(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    })
+                    .show();
         } else {
 
             /*token拦截器*/
@@ -192,35 +240,24 @@ public class LoginActivity extends AppCompatActivity {
                     .subscribe(new Observer<Result<User>>() {
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {
-                            // 显示加载动画
-                            progressDialog = ProgressDialog.show(LoginActivity.this, "请稍候", "正在登录...", true, false);
-
+                            LoadingDialog.getInstance(LoginActivity.this).show();//显示
                         }
 
                         @Override
                         public void onNext(@NonNull Result<User> result) {
-                            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                                @Override
-                                public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                                    // 根据选择的身份来隐藏或显示相应的组件
-                                    switch (checkedId) {
-                                        case R.id.rb_student:
-                                            // 如果选择了学生身份，隐藏我的审核
-                                            unshowCounselor();
-                                            break;
-
-                                        case R.id.rb_teacher:
-                                            // 如果选择了教师身份，显示我的审核
-                                            showCounselor();
-                                            break;
-
-                                    }
-                                }
-                            });
                             /*是否成功请求*/
                             if (result.getCode() == Result.FAIL) {
                                 // 错误提示
-                                Toast.makeText(LoginActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
+                                new Alert(LoginActivity.this)
+                                        .builder()
+                                        .setMsg(result.getMsg())
+                                        .setPositiveButton(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+
+                                            }
+                                        })
+                                        .show();
                                 return;
                             } else {
                                 // 检查服务器返回的数据是否为 null
@@ -232,16 +269,24 @@ public class LoginActivity extends AppCompatActivity {
                                     String userName = result.getData().getUserName();
                                     // 获取 fullName
                                     String fullName = result.getData().getFullName();
+                                    // 获取 辅导员名字
+                                    if (result.getData().getInstructor() != null) {
+                                        String instructor = result.getData().getInstructor();
+                                        SPUtils.put(LoginActivity.this, "instructor", instructor);
+                                    }
 
 
+                                    //获取登录用户的标识符
+                                    int authenticationStatus = result.getData().getAuthenticationStatus();
 
                                     /*拿到用户的信息后用工具类存起来*/
                                     int userId = result.getData().getUserId();
-
                                     SPUtils.put(LoginActivity.this, "token", token);
                                     SPUtils.put(LoginActivity.this, "userName", userName);
                                     SPUtils.put(LoginActivity.this, "fullName", fullName);
                                     SPUtils.put(LoginActivity.this, "userId", userId);
+                                    SPUtils.put(LoginActivity.this, "authenticationStatus", authenticationStatus);
+
 
                                     // 判断是否选中记住密码的选择器
                                     ImageView memorySelector = findViewById(R.id.rgb);
@@ -251,21 +296,29 @@ public class LoginActivity extends AppCompatActivity {
                                         SharedPreferencesUtils.setParam(LoginActivity.this, "user", username);
                                         SharedPreferencesUtils.setParam(LoginActivity.this, "pass", password);
                                         /*登录成功后服务器返回token*/
-                                        Intent intent = new Intent(LoginActivity.this, Student_Menu_Activity.class);
+                                        Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
                                         startActivity(intent);
 
                                         // 立即销毁当前的Activity
                                         finish();
                                     } else {
                                         /*不记住直接登录不做保存操作*/
-                                        Intent intent = new Intent(LoginActivity.this, Student_Menu_Activity.class);
+                                        Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
                                         startActivity(intent);
                                         // 立即销毁当前的Activity
                                         finish();
                                     }
                                 } else {
-                                    // 处理 data 为 null 的情况
-                                    Toast.makeText(LoginActivity.this, "服务器返回的数据为空", Toast.LENGTH_SHORT).show();
+                                    new Alert(LoginActivity.this)
+                                            .builder()
+                                            .setMsg("服务器返回的数据为空")
+                                            .setPositiveButton(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+
+                                                }
+                                            })
+                                            .show();
                                 }
                             }
 
@@ -276,26 +329,42 @@ public class LoginActivity extends AppCompatActivity {
                             // 发生错误时的操作
                             if (e instanceof TimeoutException) {
                                 // 请求超时
-                                progressDialog.dismiss();
-                                Toast.makeText(LoginActivity.this, "服务器请求超时,请检查网络连接！", Toast.LENGTH_SHORT).show();
+                                LoadingDialog.getInstance(LoginActivity.this).hide();//隐藏
+                                new Alert(LoginActivity.this)
+                                        .builder()
+                                        .setMsg("请求过快,请稍后再试试吧~")
+                                        .setPositiveButton(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+
+                                            }
+                                        })
+                                        .show();
                             } else {
                                 // 其他服务器错误
                                 Log.e("onError", e.toString());
-                                progressDialog.dismiss();
-                                Toast.makeText(LoginActivity.this, "服务器错误", Toast.LENGTH_SHORT).show();
+                                new Alert(LoginActivity.this)
+                                        .builder()
+                                        .setMsg("服务器连接超时,请联系管理员!")
+                                        .setPositiveButton(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+
+                                            }
+                                        })
+                                        .show();
                             }
                         }
 
                         @Override
                         public void onComplete() {
                             // 完成时的操作
-                            progressDialog.dismiss();
+                            LoadingDialog.getInstance(LoginActivity.this).hide();//隐藏
                         }
                     });
 
         }
     }
-
 
     /**
      * 跳转注册
@@ -306,6 +375,15 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+    /**
+     * 跳转忘记密码
+     * */
+    @OnClick(R.id.forgetPassword)
+    public void forgetPassword(View view) {
+        Intent intent = new Intent(LoginActivity.this, RetrievePasswordActivity.class);
+        startActivity(intent);
+    }
 
 
 }

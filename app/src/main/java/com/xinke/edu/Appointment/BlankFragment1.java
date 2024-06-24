@@ -1,8 +1,10 @@
 package com.xinke.edu.Appointment;
 
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Bundle;
@@ -25,10 +27,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.release.alert.Alert;
+import com.scwang.smart.refresh.footer.ClassicsFooter;
+import com.scwang.smart.refresh.header.ClassicsHeader;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.xinke.edu.Appointment.Adapter.ClassRoomAdapter;
+import com.xinke.edu.Appointment.Adapter.CounselorAdapter;
+import com.xinke.edu.Appointment.LoaringDialog.LoadingDialog;
 import com.xinke.edu.Appointment.entity.Classrooms;
 import com.xinke.edu.Appointment.entity.Result;
 import com.xinke.edu.Appointment.net.RetrofitApi;
+import com.xinke.edu.Appointment.token.AuthTokenInterceptor;
 import com.xinke.edu.Appointment.token.SPUtils;
 import com.xinke.edu.Appointment.token.TokenHeaderInterceptor;
 
@@ -54,7 +66,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BlankFragment1 extends Fragment {
+public class BlankFragment1 extends Fragment implements ClassRoomAdapter.OnReservationSuccessListener {
 
     /*初始化下拉框*/
     private Spinner spinnerBuilding;
@@ -93,12 +105,13 @@ public class BlankFragment1 extends Fragment {
     Classrooms classrooms;
 
 
-    /*加载动画*/
-    ProgressDialog progressDialog;
-
-
     /*布局的id*/
     LinearLayout inquire, selectLayout;
+
+    /**
+     * 刷新数据
+     */
+    boolean blean;
 
     /*当天的日期*/
     String datetime;
@@ -108,14 +121,35 @@ public class BlankFragment1 extends Fragment {
     }
 
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_blank_fragment1, null, false);
 
+        /*下拉刷新样式*/
+        RefreshLayout refreshLayout = (RefreshLayout) view.findViewById(R.id.refreshLayout);
+        refreshLayout.setRefreshHeader(new ClassicsHeader(getContext()));
+        refreshLayout.setRefreshFooter(new ClassicsFooter(getContext()));
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
+                GetData();
+
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
+                boolean boole = GetData();
+                if (boole) {
+                } else {
+                }
+                refreshlayout.finishLoadMore(boole);//传入false表示加载失败
+
+            }
+        });
 
 
 
@@ -192,9 +226,22 @@ public class BlankFragment1 extends Fragment {
         });
 
 
+        //调用监听器回调
+        setupAdapter();
+
         return view;
 
     }
+
+    //设置监听器
+    private void setupAdapter() {
+        classGouAdapter = new ClassRoomAdapter(new ArrayList<>());
+        classGouAdapter.setOnReservationSuccessListener(this);
+        classGouAdapter.setContext(getContext());
+        recyclerView.setAdapter(classGouAdapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+    }
+
 
     /*默认加载下拉选择器的方法*/
     private void initSpinners() {
@@ -309,20 +356,45 @@ public class BlankFragment1 extends Fragment {
         datePickerDialog.show();
     }
 
-
     /*okhttp拦截器*/
     private OkHttpClient.Builder getClient() {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
         httpClientBuilder.connectTimeout(15, TimeUnit.SECONDS);
 
-        // 添加 token 拦截器
+        //token拦截器
         httpClientBuilder.addNetworkInterceptor(new TokenHeaderInterceptor(getContext()));
+
+        // 添加状态码拦截器
+        httpClientBuilder.addInterceptor(new AuthTokenInterceptor(getContext()));
 
         return httpClientBuilder;
     }
 
+
+    /*获取系统当前时间*/
+    public String CurrentTime() {
+        // 获取当前时间
+        Date currentTime = new Date();
+
+        // 创建SimpleDateFormat对象，指定日期时间格式
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        // 格式化当前时间
+        formattedTime = sdf.format(currentTime);
+
+        return formattedTime;
+    }
+
+
+    @Override
+    public void onReservationSuccess() {
+        //重新请求数据
+        GetData();
+    }
+
+
     /*后端获取数据的方法*/
-    public void GetData() {
+    public boolean GetData() {
         /*获取网络*/
         Retrofit retrofit = new Retrofit
                 .Builder()
@@ -343,9 +415,11 @@ public class BlankFragment1 extends Fragment {
         classrooms.setFloor(floorStr);
 
         classrooms.setPeriod(periodStr);
-
-        classrooms.setTime(timeStr);
-
+        if (timeStr == null) {
+            classrooms.setTime(datetime);
+        } else {
+            classrooms.setTime(timeStr);
+        }
 
 
         retrofitApi.queryclassroom(classrooms, settoken)
@@ -355,17 +429,15 @@ public class BlankFragment1 extends Fragment {
                 .subscribe(new Observer<Result<List<Classrooms>>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-                        // 显示加载动画
-                        progressDialog = ProgressDialog.show(getContext(), "请稍候", "正在疯狂查询中...", true, false);
+                        //加载动画
+                        LoadingDialog.getInstance(getContext()).show();
                     }
 
                     @Override
                     public void onNext(@NonNull Result<List<Classrooms>> listResult) {
                         List<Classrooms> data = listResult.getData();
                         if (data != null && data.size() != 0) {
-                            /*查询成功后结束动画*/
-                            progressDialog.dismiss();
-                            Toast.makeText(getContext(), "查询成功！", Toast.LENGTH_SHORT).show();
+
 
                             /*一共获取到的数据*/
                             int size = data.size();
@@ -376,16 +448,29 @@ public class BlankFragment1 extends Fragment {
 
                             SPUtils.put(getContext(), "buildingStr", buildingStr);
                             SPUtils.put(getContext(), "floorStr", floorStr);
-                            /*保存要用预约的时间*/
-                            SPUtils.put(getContext(), "timeStr", timeStr);
+
+                            // 如果用户选择了时间，则保存用户选择的时间，否则保存当前日期
+                            if (timeStr != null) {
+                                SPUtils.put(getContext(), "timeStr", timeStr);
+                            } else {
+                                SPUtils.put(getContext(), "datetime", formattedTime);
+                            }
                             /*保存要预约的节数*/
                             SPUtils.put(getContext(), "periodStr", periodStr);
 
 
                             // 更新适配器的数据集合
                             classGouAdapter.replaceData(listResult.getData());
+
+                            Toast.makeText(getContext(), "查询成功", Toast.LENGTH_SHORT).show();
+
+                            LoadingDialog.getInstance(getContext()).hide();//隐藏加载窗
                         } else {
-                            Toast.makeText(getContext(), "没有符合你查询的教室噢QAQ~，请重新选择吧。", Toast.LENGTH_SHORT).show();
+                            new Alert(getContext())
+                                    .builder(Alert.Type.PROGRESS)
+                                    .setProgressText("没有检索到符合你查询的教室，请重新选择吧，轻触重试！")
+                                    .show();
+                            blean = false;
                             return;
                         }
 
@@ -394,44 +479,41 @@ public class BlankFragment1 extends Fragment {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-
                         e.printStackTrace();
                         // 发生错误时的操作
                         if (e instanceof TimeoutException) {
                             // 请求超时
-                            progressDialog.dismiss();
-                            Toast.makeText(getContext(), "服务器请求超时", Toast.LENGTH_SHORT).show();
+                            LoadingDialog.getInstance(getContext()).hide();//隐藏
+                            requireActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getContext(), "服务器请求超时", Toast.LENGTH_SHORT).show();
+                                    blean = false;
+                                }
+                            });
                         } else {
                             // 其他服务器错误
                             Log.e("onError", e.toString());
-                            progressDialog.dismiss();
-                            Toast.makeText(getContext(), "服务器错误", Toast.LENGTH_SHORT).show();
+                            requireActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getContext(), "网络不给力噢，请检查你的网络设置~", Toast.LENGTH_SHORT).show();
+                                    blean = false;
+                                }
+                            });
                         }
                     }
 
                     @Override
                     public void onComplete() {
-                        progressDialog.dismiss();
+                        LoadingDialog.getInstance(getContext()).hide();//隐藏
                     }
                 });
 
+        Log.d("blean", blean + "");
+        return blean;
+
     }
-
-
-    /*获取系统当前时间*/
-    public String CurrentTime() {
-        // 获取当前时间
-        Date currentTime = new Date();
-
-        // 创建SimpleDateFormat对象，指定日期时间格式
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-
-        // 格式化当前时间
-        formattedTime = sdf.format(currentTime);
-
-        return formattedTime;
-    }
-
 
 }
 

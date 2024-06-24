@@ -1,372 +1,393 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FAFAFA">
+        android:layout_height="match_parent">
 
-        <!-- 工具栏 -->
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/LayoutToolBar"
-            android:layout_width="0dp"
-            android:layout_height="?attr/actionBarSize"
-            android:background="#3E69F7"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FAFAFA">
 
-            <!-- 返回按钮 -->
-            <ImageView
-                android:id="@+id/back"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/back_white"
-                android:tint="#FFFFFF" />
-
-            <!-- 标题文本 -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="预约详情"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-        </androidx.appcompat.widget.Toolbar>
-
-
-        <RelativeLayout
-            android:id="@+id/img_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:padding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/LayoutToolBar">
-
-
-            <!-- 动态显示二维码 -->
-            <ImageView
-                android:id="@+id/qrCodeImageView"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_centerHorizontal="true"/>
-
-            <TextView
-                android:id="@+id/status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/qrCodeImageView"
-                android:layout_centerInParent="true"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:padding="5dp"
-                android:text="待审核"
-                android:textColor="@color/red"
-                android:textSize="16sp" />
-
-        </RelativeLayout>
-
-
-        <!-- 预约详情的主要内容开始 -->
-
-        <!--申请人-->
-        <RelativeLayout
-            android:id="@+id/details_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="#FFFFFF"
-            android:padding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/img_layout">
-
-            <!-- 申请人姓名 -->
+            <!-- 工具栏 -->
             <LinearLayout
-                android:id="@+id/frame_layout"
+                android:id="@+id/LayoutToolBar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="?actionBarSize"
+                android:background="#3E69F7"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/back"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/back_white"
+                    android:tint="@color/white" />
 
                 <TextView
-                    android:id="@+id/name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="申请人："
-                    android:textColor="#333333"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/fullName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/name"
-                    android:text="你好"
-                    android:textColor="#333333"
-                    android:textSize="16sp" />
-
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
-        <!-- 发起申请的时间-->
-        <RelativeLayout
-            android:id="@+id/initiate_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="#FFFFFF"
-            android:padding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/details_layout">
-
-            <!-- 发起时间 -->
-            <LinearLayout
-                android:id="@+id/time_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/faqi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/name"
-                    android:text="发起申请时间:"
-                    android:textColor="#333333" />
-
-                <TextView
-                    android:id="@+id/creationTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/name"
-                    android:layout_toRightOf="@+id/faqi"
-                    android:text=" 2023-11-28"
-                    android:textColor="#000"/>
-            </LinearLayout>
-
-        </RelativeLayout>
-
-
-        <!--教室门牌号-->
-        <RelativeLayout
-            android:id="@+id/house_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="#FFFFFF"
-            android:padding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/initiate_layout">
-
-            <!-- 教室门牌号 -->
-            <LinearLayout
-                android:id="@+id/number_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="教室门牌号："
-                    android:textColor="#000" />
-
-                <TextView
-                    android:id="@+id/classroomId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="C209"
-                    android:textColor="#000" />
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
-        <!--预约教室的时间-->
-        <RelativeLayout
-            android:id="@+id/reserve_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="#FFFFFF"
-            android:padding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/house_layout">
-
-            <!-- 预约的具体时间 -->
-            <LinearLayout
-                android:id="@+id/specific_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="预约时间："
-                    android:textColor="#000" />
-
-                <TextView
-                    android:id="@+id/time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2023-11-27"
-                    android:textColor="#000" />
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
-
-        <!--预约教室的具体人数-->
-        <RelativeLayout
-            android:id="@+id/people_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="#FFFFFF"
-            android:padding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/reserve_layout">
-
-            <!-- 预约的具体人数 -->
-            <LinearLayout
-                android:id="@+id/number_of_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="预计参与预约活动的人数：" />
-
-                <TextView
-                    android:id="@+id/numberParticipants"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="99人"
-                    android:textColor="#000" />
-
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
-        <!--预约的节数-->
-        <RelativeLayout
-            android:id="@+id/festival_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="#FFFFFF"
-            android:padding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/reserve_layout">
-
-            <!-- 预约的具体人数 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="节数："
-                    android:textColor="#000" />
-
-                <TextView
-                    android:id="@+id/period"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1、2节"
-                    android:textColor="#000" />
-
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/reason_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="#FFFFFF"
-            android:padding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/festival_layout">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:text="申请理由：" />
-
-
-                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/background_with_border"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:id="@+id/purpose"
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:padding="5dp"
-                        android:text="开会"
-                        android:textColor="#000" />
-
-                </FrameLayout>
-
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="预约详情"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
 
-        </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/img_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:padding="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/LayoutToolBar">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/reason_layout">
-            <!-- 底部按钮 -->
-            <Button
-                android:id="@+id/reservation_button"
+
+                <!-- 动态显示二维码 -->
+                <ImageView
+                    android:id="@+id/qrCodeImageView"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:id="@+id/status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/qrCodeImageView"
+                    android:layout_centerInParent="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:padding="5dp"
+                    android:text="待审核"
+                    android:textColor="@color/red"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+
+            <!-- 预约详情的主要内容开始 -->
+
+            <!--申请人-->
+            <RelativeLayout
+                android:id="@+id/details_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="#FFFFFF"
+                android:padding="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/img_layout">
+
+                <!-- 申请人姓名 -->
+                <LinearLayout
+                    android:id="@+id/frame_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="申请人："
+                        android:textColor="#000"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/fullName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/name"
+                        android:text="你好"
+                        android:textColor="#000"
+                        android:textSize="16sp" />
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <!-- 发起申请的时间-->
+            <RelativeLayout
+                android:id="@+id/initiate_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="#FFFFFF"
+                android:padding="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/details_layout">
+
+                <!-- 发起时间 -->
+                <LinearLayout
+                    android:id="@+id/time_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/faqi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/name"
+                        android:text="发起申请时间："
+                        android:textColor="#000"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/creationTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/name"
+                        android:layout_toRightOf="@+id/faqi"
+                        android:text=" 2023-11-28"
+                        android:textColor="#000"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+            <!--教室门牌号-->
+            <RelativeLayout
+                android:id="@+id/house_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="#FFFFFF"
+                android:padding="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/initiate_layout">
+
+                <!-- 教室门牌号 -->
+                <LinearLayout
+                    android:id="@+id/number_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="教室门牌号："
+                        android:textColor="#000"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/classroomId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="C209"
+                        android:textColor="#000"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <!--预约教室的时间-->
+            <RelativeLayout
+                android:id="@+id/reserve_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="#FFFFFF"
+                android:padding="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/house_layout">
+
+                <!-- 预约的具体时间 -->
+                <LinearLayout
+                    android:id="@+id/specific_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="预约时间："
+                        android:textColor="#000"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2023-11-27"
+                        android:textColor="#000"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+            <!--预约教室的具体人数-->
+            <RelativeLayout
+                android:id="@+id/people_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="#FFFFFF"
+                android:padding="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/reserve_layout">
+
+                <!-- 预约的具体人数 -->
+                <LinearLayout
+                    android:id="@+id/number_of_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="预计参与预约活动的人数：" />
+
+                    <TextView
+                        android:id="@+id/numberParticipants"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="99人"
+                        android:textColor="#000" />
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <!--预约的节数-->
+            <RelativeLayout
+                android:id="@+id/festival_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="#FFFFFF"
+                android:padding="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/reserve_layout">
+
+                <!-- 预约的具体人数 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="节数："
+                        android:textColor="#000"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/period"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1、2节"
+                        android:textColor="#000"
+                        android:textSize="16sp" />
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/reason_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="#FFFFFF"
+                android:padding="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/festival_layout">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="申请理由：" />
+
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_with_border">
+
+                        <TextView
+                            android:id="@+id/purpose"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_margin="5dp"
+                            android:text="开会"
+                            android:textColor="#000" />
+
+                    </FrameLayout>
+
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#3e69f7"
-                android:text="取消预约"
-                android:textColor="#FFFFFF" />
-        </RelativeLayout>
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/reason_layout">
+                <!-- 底部按钮 -->
+                <Button
+                    android:id="@+id/reservation_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#3e69f7"
+                    android:text="取消预约"
+                    android:textColor="#FFFFFF" />
+            </RelativeLayout>
 
 
-        <!-- 预约详情的主要内容结束 -->
+            <!-- 预约详情的主要内容结束 -->
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

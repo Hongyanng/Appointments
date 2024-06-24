@@ -6,7 +6,6 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.xinke.edu.Appointment.BlankFragment1;
-import com.xinke.edu.Appointment.BlankFragment2;
 
 public class OrdersPagerAdapter extends FragmentStateAdapter {
 

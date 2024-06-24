@@ -1,302 +1,319 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.scwang.smart.refresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/refreshLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:padding="8dp">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:elevation="0dp">
-
-        <!-- 内容布局 -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll">
-            <!-- 顶部栏布局 -->
-            <ImageView
-                android:id="@+id/imageViewTop"
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/result_log" />
-
-
-            <!-- 双栏布局：将教室楼名、楼层、节数和日期选择分为两栏 -->
-            <LinearLayout
-                android:id="@+id/head_Spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/imageViewTop"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <!-- 第一栏：教室楼名和楼层 -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <!-- 教室楼名选择 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="5dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="教室楼名:"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                        <Spinner
-                            android:id="@+id/spinnerBuilding"
-                            android:layout_width="110dp"
-                            android:layout_height="40dp"
-                            android:background="@drawable/spinner_background"
-                            android:padding="8dp" />
-                    </LinearLayout>
-
-                    <!-- 教室楼层选择 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="5dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="楼        层:"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                        <Spinner
-                            android:id="@+id/spinnerFloor"
-                            android:layout_width="110dp"
-                            android:layout_height="40dp"
-                            android:background="@drawable/spinner_background"
-                            android:padding="8dp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- 第二栏：节数和日期选择 -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <!-- 节数选择 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="5dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="节数:"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                        <Spinner
-                            android:id="@+id/spinnerPeriod"
-                            android:layout_width="110dp"
-                            android:layout_height="40dp"
-                            android:background="@drawable/spinner_background"
-                            android:padding="8dp" />
-                    </LinearLayout>
-
-                    <!-- 日期选择 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="5dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="日期:"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                        <Button
-                            android:id="@+id/btnPickDate"
-                            android:layout_width="110dp"
-                            android:layout_height="40dp"
-                            android:background="@drawable/spinner_background"
-                            android:padding="8dp" />
-
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-
-        </RelativeLayout>
-
-        <!-- 用户选择的信息显示 -->
-        <TextView
-            android:id="@+id/riqi_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/head_Spinner"
-            android:text="请确认您选择的预约信息"
-            android:textSize="16sp" />
-
-        <!-- 显示用户选择的预约信息，分为两个部分 -->
-        <LinearLayout
-            android:id="@+id/xianshi_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/riqi_text"
-            android:layout_marginTop="5dp"
-            android:orientation="vertical"
-            android:padding="8dp">
-
-            <!-- 第一部分：楼名和楼层 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tvSelectedBuilding"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="教室楼名: 无"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tvSelectedPeriod"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="节数: 无"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tvSelectedFloor"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="楼        层:无"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tvSelectedDate"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="日期: 无"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <!--点击搜索-->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/hhh"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/xianshi_text"
-            android:layout_margin="8dp"
-            android:layout_marginTop="16dp"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="4dp">
-
-            <LinearLayout
-                android:id="@+id/layoutSearch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <LinearLayout
-                    android:id="@+id/inquire"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/inquire" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="查询可预约的教室" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/selectLayout"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/quxiaoyuyue" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="查看我的预约" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-
-    <androidx.core.widget.NestedScrollView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:background="@color/white">
 
-        <!-- 列表视图 -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                app:elevation="0dp">
+
+            <!-- 内容布局 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll">
+                <!-- 顶部栏布局 -->
+                <ImageView
+                    android:id="@+id/imageViewTop"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/result_log" />
+
+
+                <!-- 双栏布局：将教室楼名、楼层、节数和日期选择分为两栏 -->
+                <LinearLayout
+                    android:id="@+id/head_Spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imageViewTop"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <!-- 第一栏：教室楼名和楼层 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <!-- 教室楼名选择 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="教室楼名:"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <Spinner
+                                android:id="@+id/spinnerBuilding"
+                                android:layout_width="110dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/spinner_background"
+                                android:padding="8dp" />
+                        </LinearLayout>
+
+                        <!-- 教室楼层选择 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="楼        层:"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <Spinner
+                                android:id="@+id/spinnerFloor"
+                                android:layout_width="110dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/spinner_background"
+                                android:padding="8dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- 第二栏：节数和日期选择 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <!-- 节数选择 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="节数:"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <Spinner
+                                android:id="@+id/spinnerPeriod"
+                                android:layout_width="110dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/spinner_background"
+                                android:padding="8dp" />
+                        </LinearLayout>
+
+                        <!-- 日期选择 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="日期:"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <Button
+                                android:id="@+id/btnPickDate"
+                                android:layout_width="110dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/spinner_background"
+                                android:padding="8dp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+            <!-- 用户选择的信息显示 -->
+            <TextView
+                android:id="@+id/riqi_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/head_Spinner"
+                android:text="请确认您选择的预约信息"
+                android:textSize="16sp" />
+
+            <!-- 显示用户选择的预约信息，分为两个部分 -->
+            <LinearLayout
+                android:id="@+id/xianshi_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/riqi_text"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <!-- 第一部分：楼名和楼层 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvSelectedBuilding"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="教室楼名: 无"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvSelectedPeriod"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="节数: 无"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvSelectedFloor"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="楼        层:无"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvSelectedDate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="日期: 无"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!--点击搜索-->
+
+            <RelativeLayout
+                android:id="@+id/hhh_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/head_Spinner"
+                android:layout_margin="8dp"
+                android:layout_marginTop="16dp">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/hhh"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_marginTop="16dp"
+                    app:cardBackgroundColor="#ffffff"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="4dp"
+                    app:cardPreventCornerOverlap="true"
+                    app:cardUseCompatPadding="false">
+
+                    <LinearLayout
+                        android:id="@+id/layoutSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <LinearLayout
+                            android:id="@+id/inquire"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="8dp">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@mipmap/inquire" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="查询可预约的教室" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/selectLayout"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="8dp">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@mipmap/quxiaoyuyue" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="查看我的预约" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <androidx.core.widget.NestedScrollView
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/hhh" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <!-- 列表视图 -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/hhh" />
 
 
-    </androidx.core.widget.NestedScrollView>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</com.scwang.smart.refresh.layout.SmartRefreshLayout>

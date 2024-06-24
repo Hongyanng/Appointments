@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.xinke.edu.Appointment.LoginActivity;
 import com.xinke.edu.Appointment.R;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity  {
 
     Handler handler = new Handler();
     private Runnable runnable = new Runnable() {

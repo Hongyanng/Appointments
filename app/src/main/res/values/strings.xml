@@ -10,8 +10,8 @@
     <string name="Appointment">教室预约系统APP</string>
     <string name="instructor">辅导员</string>
     <string name="profile">我的信息</string>
-    <string name="collection">我的收藏</string>
-    <string name="inbox">我的消息</string>
+    <string name="collection">申请调课</string>
+    <string name="inbox">账号与安全</string>
     <string name="notification">我的审核</string>
     <string name="orders">我的预约</string>
     <string name="setting">设置</string>
@@ -20,4 +20,19 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="exituser">退出当前账户</string>
+    <string name="Counseling">辅导员</string>
+    <string name="account_security">账号与安全</string>
+
+    <string name="notifications">WxPusher消息提醒</string>
+    <string name="do_not_disturb">勿扰模式</string>
+    <string name="chats">聊天</string>
+    <string name="privacy">申请调课</string>
+    <string name="general">通用</string>
+    <string name="about">关于软件</string>
+    <string name="help_feedback">优化建议</string>
+    <string name="wechat_services">插件</string>
+    <string name="switch_account">切换账号</string>
+    <string name="log_out">退出</string>
+
+
 </resources>

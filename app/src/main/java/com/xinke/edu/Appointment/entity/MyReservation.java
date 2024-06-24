@@ -1,12 +1,17 @@
 package com.xinke.edu.Appointment.entity;
 
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 学生查询预约记录接口的实体类
  */
 
 public class MyReservation {
-
 
 
 //    cancelReason	取消原因	string
@@ -22,41 +27,14 @@ public class MyReservation {
 //    updateTime	最后一次修改预约信息的时间	string(date-time)
 //    userId	预约教室的用户的唯一标识符。这个字段应该与用户信息表相关联	integer(int32)
 
+    @SerializedName("reservationId")
+    @Expose
     private int reservationId;
     private String classroomId;
     private int userId;
     private String fullName;
     private String time;
     private String period;
-    private int status;
-    private String creationTime;
-
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String getCreationTime() {
-        return creationTime;
-    }
-
-    public void setCreationTime(String creationTime) {
-        this.creationTime = creationTime;
-    }
-
-    public String getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    private String updateTime;
 
     public int getReservationId() {
         return reservationId;
@@ -90,6 +68,13 @@ public class MyReservation {
         this.fullName = fullName;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 
     public String getPeriod() {
         return period;
@@ -107,7 +92,21 @@ public class MyReservation {
         this.status = status;
     }
 
+    public String getCreationTime() {
+        return creationTime;
+    }
 
+    public void setCreationTime(String creationTime) {
+        this.creationTime = creationTime;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public String getPurpose() {
         return purpose;
@@ -117,11 +116,11 @@ public class MyReservation {
         this.purpose = purpose;
     }
 
-    public int getNumberParticipants() {
+    public Integer getNumberParticipants() {
         return numberParticipants;
     }
 
-    public void setNumberParticipants(int numberParticipants) {
+    public void setNumberParticipants(Integer numberParticipants) {
         this.numberParticipants = numberParticipants;
     }
 
@@ -133,11 +132,13 @@ public class MyReservation {
         this.cancelReason = cancelReason;
     }
 
-    private String purpose;
-    private int numberParticipants;
-    private String cancelReason;
+    public int getApproved() {
+        return approved;
+    }
 
-    String token;
+    public void setApproved(int approved) {
+        this.approved = approved;
+    }
 
     public String getToken() {
         return token;
@@ -145,6 +146,33 @@ public class MyReservation {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    private int status;
+    private String creationTime;
+    private String updateTime;
+    private String purpose;
+    private Integer numberParticipants;
+
+
+    @SerializedName("cancelReason")
+    @Expose
+    private String cancelReason;
+
+
+    @SerializedName("approved")
+    @Expose
+    private int approved;
+    private String token;
+
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("approved", approved);
+        map.put("cancelReason", cancelReason);
+        map.put("reservationId", reservationId);
+        // 根据需要添加其他字段
+        return map;
     }
 
 }

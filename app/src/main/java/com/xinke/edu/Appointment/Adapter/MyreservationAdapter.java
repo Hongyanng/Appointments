@@ -12,20 +12,21 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.xinke.edu.Appointment.LoginActivity;
 import com.xinke.edu.Appointment.R;
 import com.xinke.edu.Appointment.ReservationActivity;
-import com.xinke.edu.Appointment.Student_Menu_Activity;
-import com.xinke.edu.Appointment.entity.Classrooms;
 import com.xinke.edu.Appointment.entity.MyReservation;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+
+/**
+ * 我的预约一级菜单
+ */
 
 public class MyreservationAdapter extends BaseQuickAdapter<MyReservation, BaseViewHolder> {
 
@@ -33,6 +34,8 @@ public class MyreservationAdapter extends BaseQuickAdapter<MyReservation, BaseVi
     RelativeLayout MakeLayout;
 
     private Context context;
+
+    public static final int RESERVATION_ACTIVITY_REQUEST_CODE = 1;
 
 
     public Context getContext() {
@@ -72,24 +75,32 @@ public class MyreservationAdapter extends BaseQuickAdapter<MyReservation, BaseVi
         /*申请的原因*/
         helper.setText(R.id.purpose, item.getPurpose() + "的教室申请");
 
-        Log.d("getPurpose", item.getPurpose());
+
         /*申请教室的时间*/
         helper.setText(R.id.time, item.getTime() + " " + "第" + item.getPeriod() + "节");
         /*首次申请教室的时间*/
         helper.setText(R.id.creationTime, item.getCreationTime());
 
 
-        /*申请教室的状态*/
+        /*审核状态*/
         String statusString = getStatusString(item.getStatus());
+        /*取消原因*/
         String cancelReason = item.getCancelReason();
         if (cancelReason != null) {
-            SpannableString spannableStatus = new SpannableString(statusString + " (" + cancelReason + ")");
+            SpannableString spannableStatus = new SpannableString(statusString +"  "+"原因:"+ " (" + cancelReason + ")");
+
             if (statusString.equals("已取消") || statusString.equals("已驳回")) {
                 spannableStatus.setSpan(new ForegroundColorSpan(Color.RED), 0, spannableStatus.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
             helper.setText(R.id.status, spannableStatus);
         } else {
-            helper.setText(R.id.status, statusString);
+            SpannableString yStatus = new SpannableString(statusString);
+            if (statusString.equals("待教室管理员审核")) {
+                yStatus.setSpan(new ForegroundColorSpan(Color.BLUE), 0, yStatus.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            } else if (statusString.equals("已通过")) {
+                yStatus.setSpan(new ForegroundColorSpan(Color.GREEN), 0, yStatus.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+            helper.setText(R.id.status, yStatus);
         }
 
 
@@ -140,12 +151,12 @@ public class MyreservationAdapter extends BaseQuickAdapter<MyReservation, BaseVi
 
     }
 
-
+    /*判断当前状态的方法*/
     private String getStatusString(int status) {
         String statusString = "";
         switch (status) {
             case 0:
-                statusString = "待审核";
+                statusString = "待教室管理员审核";
                 break;
             case 1:
                 statusString = "已通过";
@@ -160,7 +171,6 @@ public class MyreservationAdapter extends BaseQuickAdapter<MyReservation, BaseVi
                 statusString = "已驳回";
                 break;
         }
-        Log.d("statusString", statusString);
         return statusString;
 
     }

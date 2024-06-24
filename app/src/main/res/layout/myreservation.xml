@@ -6,7 +6,7 @@
     android:background="@color/background_color"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.Toolbar
+    <LinearLayout
         android:id="@+id/LayoutToolBar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
@@ -21,27 +21,34 @@
             android:id="@+id/back"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginEnd="15dp"
+            android:layout_marginTop="10dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/back_white"
             android:tint="@color/white" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
             android:text="我的预约"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
 
-    </androidx.appcompat.widget.Toolbar>
+    </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="5dp"
-        android:id="@+id/recyclerview"
+    <!-- 添加 SwipeRefreshLayout 包裹原有的布局 -->
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp" />
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
 </LinearLayout>
